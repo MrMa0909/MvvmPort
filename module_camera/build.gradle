@@ -1,0 +1,80 @@
+if (Boolean.valueOf(deps.isModule)) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
+}
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+// ARouter
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
+}
+
+android {
+
+    compileSdkVersion deps.build_versions.compileSdkVersion
+    buildToolsVersion deps.build_versions.buildToolsVersion
+
+    defaultConfig {
+        if (Boolean.valueOf(deps.isModule)) {
+            applicationId "com.cfox.module_camera"
+        }
+        minSdkVersion deps.build_versions.minSdkVersion
+        targetSdkVersion deps.build_versions.targetSdkVersion
+        versionCode deps.build_versions.versionCode
+        versionName deps.build_versions.versionName
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        dataBinding = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+    sourceSets {
+        main {
+            if (Boolean.valueOf(deps.isModule)) {
+                manifest.srcFile 'src/main/module/AndroidManifest.xml'
+            } else {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                java {
+                    exclude 'debug/**'
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation project(path: ':mvvmprot')
+    implementation project(path: ':lib_common')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$v_kotlin"
+    implementation "androidx.core:core-ktx:$v_androidx_core_ktx"
+    implementation "androidx.appcompat:appcompat:$v_androidx_appcompat"
+    implementation "androidx.constraintlayout:constraintlayout:$v_androidx_constraint_layout"
+
+    implementation "com.alibaba:arouter-api:$v_arouter_api"
+    kapt "com.alibaba:arouter-compiler:$v_arouter_compiler"
+
+    testImplementation "junit:junit:$v_junit"
+    androidTestImplementation "androidx.test.ext:junit:$v_test_ext"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$v_test_espresso_core"
+
+
+}

@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+// ARouter
+kapt {
+    arguments {
+        arg("AROUTER_MODULE_NAME", project.getName())
+    }
+}
+
+android {
+    compileSdkVersion deps.build_versions.compileSdkVersion
+    buildToolsVersion deps.build_versions.buildToolsVersion
+
+    defaultConfig {
+        applicationId deps.build_versions.applicationId
+        minSdkVersion deps.build_versions.minSdkVersion
+        targetSdkVersion deps.build_versions.targetSdkVersion
+        versionCode deps.build_versions.versionCode
+        versionName deps.build_versions.versionName
+
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        dataBinding = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation project(path: ':mvvmprot')
+    implementation project(path: ':module_home')
+    implementation project(path: ':lib_common')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$v_kotlin"
+    implementation "androidx.core:core-ktx:$v_androidx_core_ktx"
+    implementation "androidx.appcompat:appcompat:$v_androidx_appcompat"
+    implementation "androidx.constraintlayout:constraintlayout:$v_androidx_constraint_layout"
+
+    implementation "com.alibaba:arouter-api:$v_arouter_api"
+    kapt "com.alibaba:arouter-compiler:$v_arouter_compiler"
+
+    testImplementation "junit:junit:$v_junit"
+    androidTestImplementation "androidx.test.ext:junit:$v_test_ext"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$v_test_espresso_core"
+
+
+
+}
