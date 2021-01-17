@@ -22,17 +22,17 @@ object ViewAdapter {
      */
     @SuppressLint("CheckResult")
     @BindingAdapter(value = ["onClickCommand", "isThrottleFirst"], requireAll = false)
-    fun onClickCommand(view: View, clickCommand: BindingCommand<*>?, isThrottleFirst: Boolean) {
+    fun onClickCommand(view: View, clickCommand: BindingCommand<*>, isThrottleFirst: Boolean) {
         if (isThrottleFirst) {
             RxView.clicks(view)
-                .subscribe { clickCommand?.execute() }
+                .subscribe { clickCommand.execute() }
         } else {
             RxView.clicks(view)
                 .throttleFirst(
                     CLICK_INTERVAL.toLong(),
                     TimeUnit.SECONDS
                 ) //1秒钟内只允许点击1次
-                .subscribe { clickCommand?.execute() }
+                .subscribe { clickCommand.execute() }
         }
     }
 
@@ -41,9 +41,9 @@ object ViewAdapter {
      */
     @SuppressLint("CheckResult")
     @BindingAdapter(value = ["onLongClickCommand"], requireAll = false)
-    fun onLongClickCommand(view: View, clickCommand: BindingCommand<*>?) {
+    fun onLongClickCommand(view: View, clickCommand: BindingCommand<*>) {
         RxView.longClicks(view)
-            .subscribe { clickCommand?.execute() }
+            .subscribe { clickCommand.execute() }
     }
 
     /**
@@ -53,8 +53,8 @@ object ViewAdapter {
      * @param bindingCommand
      */
     @BindingAdapter(value = ["currentView"], requireAll = false)
-    fun replyCurrentView(currentView: View, bindingCommand: BindingCommand<View>?) {
-        bindingCommand?.execute(currentView)
+    fun replyCurrentView(currentView: View, bindingCommand: BindingCommand<View>) {
+        bindingCommand.execute(currentView)
     }
 
     /**
@@ -74,9 +74,9 @@ object ViewAdapter {
      * view的焦点发生变化的事件绑定
      */
     @BindingAdapter("onFocusChangeCommand")
-    fun onFocusChangeCommand(view: View, onFocusChangeCommand: BindingCommand<Boolean?>?) {
+    fun onFocusChangeCommand(view: View, onFocusChangeCommand: BindingCommand<Boolean>) {
         view.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
-            onFocusChangeCommand?.execute(hasFocus)
+            onFocusChangeCommand.execute(hasFocus)
         }
     }
 

@@ -51,11 +51,11 @@ dependencies {
     api  "androidx.core:core-ktx:$v_androidx_core_ktx"
     api  "androidx.appcompat:appcompat:$v_androidx_appcompat"
 
-    api  "android.arch.lifecycle:extensions:$lifecycle_extensions"
-    api  "android.arch.lifecycle:compiler:$lifecycle_compiler"
-    api  "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_viewmodel_ktx"
-    api  "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_runtime_ktx"
-    api  "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_livedata_ktx"
+    api  "android.arch.lifecycle:extensions:$v_lifecycle_extensions"
+    api  "android.arch.lifecycle:compiler:$v_lifecycle_compiler"
+    api  "androidx.lifecycle:lifecycle-viewmodel-ktx:$v_lifecycle_viewmodel_ktx"
+    api  "androidx.lifecycle:lifecycle-runtime-ktx:$v_lifecycle_runtime_ktx"
+    api  "androidx.lifecycle:lifecycle-livedata-ktx:$v_lifecycle_livedata_ktx"
 
     api  "com.jakewharton.rxbinding2:rxbinding:$v_rxbinding"
     api  "io.reactivex.rxjava2:rxjava:$v_rxjava"

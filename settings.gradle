@@ -1,3 +1,4 @@
+include ':appdemo'
 include ':module_camera'
 include ':app_wrapper'
 include ':lib_common'
