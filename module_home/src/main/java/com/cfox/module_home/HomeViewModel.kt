@@ -1,9 +1,8 @@
 package com.cfox.module_home
 
 import android.app.Application
-import com.cfox.mvvmprot.base.BaseApplication
-import com.cfox.mvvmprot.base.BaseModel
-import com.cfox.mvvmprot.base.BaseViewModel
+import com.cfox.mvvmprot.base.MpModel
+import com.cfox.mvvmprot.base.MpViewModel
 
-class HomeViewModel(application: Application) : BaseViewModel<BaseModel>(application) {
+class HomeViewModel(application: Application) : MpViewModel<MpModel>(application) {
 }

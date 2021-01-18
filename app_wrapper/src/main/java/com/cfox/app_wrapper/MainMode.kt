@@ -1,7 +1,7 @@
 package com.cfox.app_wrapper
 
-import com.cfox.mvvmprot.base.BaseModel
+import com.cfox.mvvmprot.base.MpModel
 
-class MainMode : BaseModel() {
+class MainMode : MpModel() {
 
 }

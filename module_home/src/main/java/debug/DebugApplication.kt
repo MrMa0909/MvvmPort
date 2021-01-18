@@ -1,6 +1,6 @@
 package debug
 
-import com.cfox.mvvmprot.base.BaseApplication
+import com.cfox.mvvmprot.base.MpApplication
 
-class DebugApplication : BaseApplication() {
+class DebugApplication : MpApplication() {
 }

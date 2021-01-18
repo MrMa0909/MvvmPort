@@ -6,6 +6,10 @@ import com.cfox.mvvmprot.base.eventstrategy.IActivityStrategy
 internal class DefaultActivityStrategy :
     IActivityStrategy {
     override fun execute(data: ActivityEventData) {
-        TODO("Not yet implemented")
+        data.getContext()?.let { context ->
+            data.getActivityIntent()?.let { intent ->
+                context.startActivity(intent)
+            }
+        }
     }
 }

@@ -5,9 +5,9 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.launcher.ARouter
 import com.cfox.lib_common.arouter.RouterPath
-import com.cfox.mvvmprot.base.BaseActivity
+import com.cfox.mvvmprot.base.MpActivity
 
-class MainActivity : BaseActivity<ViewDataBinding, MainViewModel>() {
+class MainActivityMp : MpActivity<ViewDataBinding, MainViewModelMp>() {
 
     override fun initContentView(savedInstanceState: Bundle?): Int {
         return R.layout.activity_main
@@ -17,7 +17,7 @@ class MainActivity : BaseActivity<ViewDataBinding, MainViewModel>() {
         return BR.viewModel
     }
 
-    override fun initViewModel(): MainViewModel? {
+    override fun initViewModel(): MainViewModelMp? {
         return super.initViewModel()
     }
 

@@ -1,8 +1,8 @@
 package com.cfox.mvvmprot.base
 
-open class BaseModel : IModel {
+open class MpModel : IModel {
     override fun onCleared() {
-        TODO("Not yet implemented")
+
     }
 
 }

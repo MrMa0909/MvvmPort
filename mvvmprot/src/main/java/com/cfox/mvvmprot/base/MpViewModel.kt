@@ -13,14 +13,18 @@ import com.cfox.mvvmprot.utils.SingleLiveEvent
 import com.trello.rxlifecycle4.LifecycleProvider
 import java.lang.ref.WeakReference
 
-open class BaseViewModel<M : BaseModel>(@NonNull application: Application) : AndroidViewModel(application) , IBaseViewModel {
+open class MpViewModel<M : MpModel>(@NonNull application: Application) : AndroidViewModel(application) , IBaseViewModel {
 
-    protected var model : M? = null
+    private var model : M? = null
     private var uiEventLiveData = UIEventLiveData()
     lateinit var lifecyle : WeakReference<LifecycleProvider<*>>
 
     constructor(application: Application, m: M): this (application) {
         model = m
+    }
+
+    override fun onCleared() {
+        model?.onCleared()
     }
 
     /**

@@ -14,25 +14,18 @@ import com.cfox.mvvmprot.base.eventstrategy.*
 import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
 import java.lang.reflect.ParameterizedType
 
-abstract class BaseActivity<V : ViewDataBinding, VM : BaseViewModel<*>> : RxAppCompatActivity(), IBaseView {
+abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompatActivity(), IBaseView {
     private var binding: V? = null
     private var viewModel: VM? = null
     private var viewModelId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //页面接受的参数方法
-        initParam();
-        //私有的初始化Databinding和ViewModel方法
+        initParam()
         initViewDataBinding(savedInstanceState)
-
-        //私有的ViewModel与View的契约事件回调逻辑
         registerUIEventLiveDataCallBack()
-        //页面数据初始化方法
         initData()
-        //页面事件监听的方法，一般用于ViewModel层转到View层的事件注册
         initViewObservable()
-
     }
 
     private fun registerUIEventLiveDataCallBack() {
@@ -99,10 +92,10 @@ abstract class BaseActivity<V : ViewDataBinding, VM : BaseViewModel<*>> : RxAppC
         if (viewModel == null) {
             val type = javaClass.genericSuperclass
             val modelClass = if (type is ParameterizedType) {
-                type.actualTypeArguments[1] as Class<BaseViewModel<*>>
+                type.actualTypeArguments[1] as Class<MpViewModel<*>>
             } else {
                 //如果没有指定泛型参数，则默认使用BaseViewModel
-                BaseViewModel::class.java
+                MpViewModel::class.java
             }
             viewModel = createViewModel(this, modelClass) as VM
         }

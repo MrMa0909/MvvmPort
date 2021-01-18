@@ -1,11 +1,16 @@
 package com.cfox.appdemo
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.cfox.appdemo.base.BaseActivity
+import com.cfox.appdemo.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
+
+    override fun initVariableId(): Int {
+        return BR.viewModel
+    }
+
+    override fun initContentView(savedInstanceState: Bundle?): Int {
+        return R.layout.activity_main
     }
 }
