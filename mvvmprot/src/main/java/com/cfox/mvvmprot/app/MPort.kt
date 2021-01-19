@@ -12,6 +12,7 @@ object MPort {
     }
 
     fun setConfig(config: MpConfig) {
+        config.init(AppContext.getContext())
         mpConfig = config
     }
 

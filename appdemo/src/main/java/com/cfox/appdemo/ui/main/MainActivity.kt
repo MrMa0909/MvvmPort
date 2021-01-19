@@ -1,6 +1,8 @@
-package com.cfox.appdemo
+package com.cfox.appdemo.ui.main
 
 import android.os.Bundle
+import com.cfox.appdemo.BR
+import com.cfox.appdemo.R
 import com.cfox.appdemo.base.BaseActivity
 import com.cfox.appdemo.databinding.ActivityMainBinding
 

@@ -74,6 +74,8 @@ abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompa
     open fun onActivityEvent(activityEventData: ActivityEventData) {
         val activityStrategy = MPort.getConfig()?.getStrategyManager()?.getStrategy(StrategyType.ACTIVITY)
         if (activityStrategy is IActivityStrategy) {
+            activityEventData.setContext(this)
+            activityEventData.buildStartIntent()
             activityStrategy.execute(activityEventData)
         }
     }

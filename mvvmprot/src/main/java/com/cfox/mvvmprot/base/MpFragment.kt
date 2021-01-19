@@ -127,6 +127,7 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
         val activityStrategy = MPort.getConfig()?.getStrategyManager()?.getStrategy(StrategyType.ACTIVITY)
         if (activityStrategy is IActivityStrategy) {
             activityEventData.setContext(requireActivity())
+            activityEventData.buildStartIntent()
             activityStrategy.execute(activityEventData)
         }
     }

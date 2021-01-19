@@ -1,15 +1,13 @@
 package com.cfox.mvvmprot.binding.adapter.view
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.View
 import androidx.databinding.BindingAdapter
 import com.cfox.mvvmprot.binding.command.BindingCommand
 import com.jakewharton.rxbinding2.view.RxView
 import java.util.concurrent.TimeUnit
 
-/**
- * Created by goldze on 2017/6/16.
- */
 object ViewAdapter {
     //防重复点击间隔(秒)
     const val CLICK_INTERVAL = 1
@@ -20,6 +18,7 @@ object ViewAdapter {
      * onClickCommand 绑定的命令,
      * isThrottleFirst 是否开启防止过快点击
      */
+    @JvmStatic
     @SuppressLint("CheckResult")
     @BindingAdapter(value = ["onClickCommand", "isThrottleFirst"], requireAll = false)
     fun onClickCommand(view: View, clickCommand: BindingCommand<*>, isThrottleFirst: Boolean) {
@@ -39,6 +38,7 @@ object ViewAdapter {
     /**
      * view的onLongClick事件绑定
      */
+    @JvmStatic
     @SuppressLint("CheckResult")
     @BindingAdapter(value = ["onLongClickCommand"], requireAll = false)
     fun onLongClickCommand(view: View, clickCommand: BindingCommand<*>) {
@@ -48,10 +48,11 @@ object ViewAdapter {
 
     /**
      * 回调控件本身
-     *
+     * 数据持久化
      * @param currentView
      * @param bindingCommand
      */
+    @JvmStatic
     @BindingAdapter(value = ["currentView"], requireAll = false)
     fun replyCurrentView(currentView: View, bindingCommand: BindingCommand<View>) {
         bindingCommand.execute(currentView)
@@ -60,6 +61,7 @@ object ViewAdapter {
     /**
      * view是否需要获取焦点
      */
+    @JvmStatic
     @BindingAdapter("requestFocus")
     fun requestFocusCommand(view: View, needRequestFocus: Boolean) {
         if (needRequestFocus) {
@@ -73,6 +75,7 @@ object ViewAdapter {
     /**
      * view的焦点发生变化的事件绑定
      */
+    @JvmStatic
     @BindingAdapter("onFocusChangeCommand")
     fun onFocusChangeCommand(view: View, onFocusChangeCommand: BindingCommand<Boolean>) {
         view.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
@@ -83,6 +86,7 @@ object ViewAdapter {
     /**
      * view的显示隐藏
      */
+    @JvmStatic
     @BindingAdapter(value = ["isVisible"], requireAll = false)
     fun isVisible(view: View, visibility: Boolean) {
         if (visibility) {
