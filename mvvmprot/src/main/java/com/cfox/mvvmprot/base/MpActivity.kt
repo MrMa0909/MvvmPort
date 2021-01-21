@@ -15,25 +15,55 @@ import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
 import java.lang.reflect.ParameterizedType
 
 abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompatActivity(), IBaseView {
-    private var binding: V? = null
-    private var viewModel: VM? = null
+    protected lateinit var binding: V
+    protected lateinit var viewModel: VM
     private var viewModelId: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initParam()
+        initViewModel()
         initViewDataBinding(savedInstanceState)
         registerUIEventLiveDataCallBack()
         initData()
         initViewObservable()
     }
 
+    private fun initViewModel() {
+        var viewModeTmp = createViewModel()
+        if (viewModeTmp == null) {
+            val type = javaClass.genericSuperclass
+            val modelClass = if (type is ParameterizedType) {
+                type.actualTypeArguments[1] as Class<MpViewModel<*>>
+            } else {
+                //如果没有指定泛型参数，则默认使用BaseViewModel
+                MpViewModel::class.java
+            }
+            viewModeTmp = getViewModel(this, modelClass) as VM
+        }
+        viewModel = viewModeTmp
+        //让ViewModel拥有View的生命周期感应
+        lifecycle.addObserver(viewModel)
+        viewModel.injectLifecycleProvider(this)
+    }
+
+
+
+    private fun initViewDataBinding(savedInstanceState: Bundle?) {
+        binding = DataBindingUtil.setContentView(this, initContentView(savedInstanceState))
+        viewModelId = initVariableId()
+        //关联ViewModel
+        binding.setVariable(viewModelId, viewModel)
+        //支持LiveData绑定xml，数据改变，UI自动会更新
+        binding.lifecycleOwner = this
+
+    }
+
     private fun registerUIEventLiveDataCallBack() {
 
-        viewModel?.let {
+        viewModel.let {
             it.getUEvent().getFinishEvent().observe(this, Observer {
-                    finish()
-                })
+                finish()
+            })
 
             it.getUEvent().getBackPressedEvent().observe(this, Observer {
                 onBackPressed()
@@ -87,43 +117,12 @@ abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompa
         }
     }
 
-    private fun initViewDataBinding(savedInstanceState: Bundle?) {
-        binding = DataBindingUtil.setContentView(this, initContentView(savedInstanceState))
-        viewModelId = initVariableId()
-        viewModel = initViewModel()
-        if (viewModel == null) {
-            val type = javaClass.genericSuperclass
-            val modelClass = if (type is ParameterizedType) {
-                type.actualTypeArguments[1] as Class<MpViewModel<*>>
-            } else {
-                //如果没有指定泛型参数，则默认使用BaseViewModel
-                MpViewModel::class.java
-            }
-            viewModel = createViewModel(this, modelClass) as VM
-        }
-
-        binding?.let {
-            //关联ViewModel
-            it.setVariable(viewModelId, viewModel)
-            //支持LiveData绑定xml，数据改变，UI自动会更新
-            it.lifecycleOwner = this
-        }
-
-        //让ViewModel拥有View的生命周期感应
-        viewModel?.let {
-            lifecycle.addObserver(it)
-        }
-        viewModel?.injectLifecycleProvider(this)
-    }
-
 
     override fun initData() {}
 
-    override fun initParam() {}
-
     override fun initViewObservable() {}
 
-    open fun initViewModel(): VM? = null
+    open fun createViewModel(): VM? = null
 
     open fun createViewModeFactory() : ViewModelProvider.Factory? = null
 
@@ -138,7 +137,7 @@ abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompa
      * @param <T>
      * @return
     </T> */
-    private fun <T : ViewModel?> createViewModel(activity: FragmentActivity?, cls: Class<T>?): T {
+    private fun <T : ViewModel?> getViewModel(activity: FragmentActivity?, cls: Class<T>?): T {
         return ViewModelProviders.of(activity!!, createViewModeFactory())[cls!!]
     }
 }

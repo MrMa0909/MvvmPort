@@ -21,13 +21,13 @@ import java.lang.reflect.ParameterizedType
 
 abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment() , IBaseView {
 
-    private var binding : V ? = null
-    private var viewModel : VM? = null
+    protected lateinit var binding : V
+    protected lateinit var viewModel : VM
     private var viewModelId : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initParam()
+        initViewModel()
     }
 
     override fun onCreateView(
@@ -36,7 +36,7 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, initContentView(inflater, container, savedInstanceState) , container, false)
-        return binding?.root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,13 +52,9 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
         initViewObservable()
     }
 
-    /**
-     * 注入绑定
-     */
-    fun  initViewDataBinding() {
-        viewModelId = initVariableId()
-        viewModel = initViewModel()
-        if (viewModel == null) {
+    private fun initViewModel() {
+        var viewModelTmp = createViewModel()
+        if (viewModelTmp == null) {
             val type = javaClass.genericSuperclass
             val modelClass = if (type is ParameterizedType) {
                 type.actualTypeArguments[1] as Class<MpViewModel<*>>
@@ -66,22 +62,28 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
                 //如果没有指定泛型参数，则默认使用BaseViewModel
                 MpViewModel::class.java
             }
-            viewModel = createViewModel(this, modelClass) as VM
+            viewModelTmp = getViewModel(this, modelClass) as VM
         }
-        binding?.setVariable(viewModelId, viewModel)
-        //支持LiveData绑定xml，数据改变，UI自动会更新
-        binding?.lifecycleOwner = this
+        viewModel = viewModelTmp
         //让ViewModel拥有View的生命周期感应
-        viewModel?.let {
-            lifecycle.addObserver(it)
-        }
+        lifecycle.addObserver(viewModel)
+        viewModel.injectLifecycleProvider(this)
+    }
 
-        viewModel?.injectLifecycleProvider(this)
+    /**
+     * 注入绑定
+     */
+    private fun initViewDataBinding() {
+        viewModelId = initVariableId()
+        binding.setVariable(viewModelId, viewModel)
+        //支持LiveData绑定xml，数据改变，UI自动会更新
+        binding.lifecycleOwner = this
+
 
     }
 
     private fun registerUIEventLiveDataCallBack() {
-        viewModel?.let {
+        viewModel.let {
             it.getUEvent().getFinishEvent().observe(this,
                 Observer {
                     activity?.finish()
@@ -158,11 +160,9 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
      *
      * @return 继承BaseViewModel的ViewModel
      */
-    open fun initViewModel() : VM ? = null
+    open fun createViewModel() : VM ? = null
 
     open fun createViewModeFactory() : ViewModelProvider.Factory? = null
-
-    override fun initParam() {}
 
     override fun initData() {}
 
@@ -175,7 +175,7 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
      * @param <T>
      * @return
     </T> */
-    private fun <T : ViewModel?> createViewModel(fragment: Fragment?, cls: Class<T>?): T {
+    private fun <T : ViewModel?> getViewModel(fragment: Fragment?, cls: Class<T>?): T {
         return ViewModelProviders.of(fragment!!, createViewModeFactory())[cls!!]
     }
 }

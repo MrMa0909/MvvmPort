@@ -12,7 +12,6 @@ android {
         targetSdkVersion deps.build_versions.targetSdkVersion
         versionCode deps.build_versions.versionCode
         versionName deps.build_versions.versionName
-//        versionName deps.mvvm_versions.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
