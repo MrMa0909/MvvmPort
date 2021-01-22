@@ -9,7 +9,6 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.cfox.mvvmprot.app.MPort
 import com.cfox.mvvmprot.base.eventdata.ActivityEventData
@@ -17,6 +16,9 @@ import com.cfox.mvvmprot.base.eventdata.DialogEventData
 import com.cfox.mvvmprot.base.eventdata.FragmentEventData
 import com.cfox.mvvmprot.base.eventdata.IEventData
 import com.cfox.mvvmprot.base.eventstrategy.*
+import com.cfox.mvvmprot.base.viewmodel.MpViewModel
+import com.cfox.mvvmprot.base.viewmodel.ViewModelRequest
+import com.cfox.mvvmprot.base.viewmodel.ViewModelFactory
 import java.lang.reflect.ParameterizedType
 
 abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment() , IBaseView {
@@ -162,12 +164,23 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
      */
     open fun createViewModel() : VM ? = null
 
-    open fun createViewModeFactory() : ViewModelProvider.Factory? = null
+    open fun createViewModelRequest() : ViewModelRequest =
+        ViewModelRequest()
 
     override fun initData() {}
 
     override fun initViewObservable() {}
-
+    private val viewModelFactory =
+        ViewModelFactory {
+            val vmr = createViewModelRequest()
+            vmr.application = activity!!.application
+            if (activity is MpActivity<*, *>) {
+                (activity as MpActivity<*, *>).getShareModel().let {
+                    vmr.shareViewMode = it
+                }
+            }
+            vmr
+        }
     /**
      * 创建ViewModel
      *
@@ -176,6 +189,6 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
      * @return
     </T> */
     private fun <T : ViewModel?> getViewModel(fragment: Fragment?, cls: Class<T>?): T {
-        return ViewModelProviders.of(fragment!!, createViewModeFactory())[cls!!]
+        return ViewModelProviders.of(fragment!!, viewModelFactory)[cls!!]
     }
 }

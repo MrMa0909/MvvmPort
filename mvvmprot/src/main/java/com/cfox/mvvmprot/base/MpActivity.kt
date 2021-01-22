@@ -11,6 +11,9 @@ import com.cfox.mvvmprot.base.eventdata.DialogEventData
 import com.cfox.mvvmprot.base.eventdata.FragmentEventData
 import com.cfox.mvvmprot.base.eventdata.IEventData
 import com.cfox.mvvmprot.base.eventstrategy.*
+import com.cfox.mvvmprot.base.viewmodel.MpViewModel
+import com.cfox.mvvmprot.base.viewmodel.ViewModelRequest
+import com.cfox.mvvmprot.base.viewmodel.ViewModelFactory
 import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
 import java.lang.reflect.ParameterizedType
 
@@ -18,6 +21,10 @@ abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompa
     protected lateinit var binding: V
     protected lateinit var viewModel: VM
     private var viewModelId: Int = 0
+
+    internal fun getShareModel() : VM {
+        return viewModel
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +52,6 @@ abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompa
         lifecycle.addObserver(viewModel)
         viewModel.injectLifecycleProvider(this)
     }
-
-
 
     private fun initViewDataBinding(savedInstanceState: Bundle?) {
         binding = DataBindingUtil.setContentView(this, initContentView(savedInstanceState))
@@ -124,11 +129,19 @@ abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompa
 
     open fun createViewModel(): VM? = null
 
-    open fun createViewModeFactory() : ViewModelProvider.Factory? = null
-
     abstract fun initVariableId(): Int
 
     abstract fun initContentView(savedInstanceState: Bundle?): Int
+
+    open fun createViewModelRequest() : ViewModelRequest =
+        ViewModelRequest()
+
+    private val viewModelFactory =
+        ViewModelFactory {
+            val vmr = createViewModelRequest()
+            vmr.application = application
+            vmr
+        }
 
     /**
      * 创建ViewModel
@@ -138,6 +151,6 @@ abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompa
      * @return
     </T> */
     private fun <T : ViewModel?> getViewModel(activity: FragmentActivity?, cls: Class<T>?): T {
-        return ViewModelProviders.of(activity!!, createViewModeFactory())[cls!!]
+        return ViewModelProviders.of(activity!!, viewModelFactory)[cls!!]
     }
 }

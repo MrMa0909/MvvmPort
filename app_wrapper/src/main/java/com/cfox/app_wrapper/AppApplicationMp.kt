@@ -1,6 +1,6 @@
 package com.cfox.app_wrapper
 
-import com.cfox.mvvmprot.base.MpApplication
+import com.cfox.mvvmprot.app.MpApplication
 
 class AppApplicationMp : MpApplication() {
 

@@ -17,16 +17,29 @@ class MpConfig {
     private constructor() {}
 
     private constructor(builder: Builder) {
-        strategyManager.setStrategy(StrategyType.ACTIVITY, builder.activityStrategy ?: DefaultActivityStrategy())
-        strategyManager.setStrategy(StrategyType.FRAGMENT, builder.fragmentStrategy ?: DefaultFragmentStrategy())
-        strategyManager.setStrategy(StrategyType.DIALOG, builder.dialogStrategy ?: DefaultDialogStrategy())
-        strategyManager.setStrategy(StrategyType.OTHER, builder.otherStrategy ?: DefaultOtherStrategy())
-
-        dataPersistManager.setStrategy(builder.dataPersistStrategy ?: DefaultDataPersistStrategy())
+        builder.activityStrategy?.let {
+            strategyManager.setStrategy(StrategyType.ACTIVITY, it)
+        }
+        builder.fragmentStrategy?.let {
+            strategyManager.setStrategy(StrategyType.FRAGMENT, it)
+        }
+        builder.dialogStrategy?.let {
+            strategyManager.setStrategy(StrategyType.DIALOG, it)
+        }
+        builder.otherStrategy?.let {
+            strategyManager.setStrategy(StrategyType.OTHER, it)
+        }
+        builder.dataPersistStrategy?.let {
+            dataPersistManager.setStrategy(it)
+        }
     }
 
-    fun getStrategyManager() : MpStrategyManager {
+    internal fun getStrategyManager() : MpStrategyManager {
         return strategyManager
+    }
+
+    internal fun getDataPersistManager() : DataPersistManager {
+        return dataPersistManager
     }
 
     internal fun init(context: Context) {

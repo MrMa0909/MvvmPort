@@ -1,10 +1,11 @@
-package com.cfox.mvvmprot.base
+package com.cfox.mvvmprot.base.viewmodel
 
-import android.app.Application
 import androidx.annotation.NonNull
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.cfox.mvvmprot.base.IBaseViewModel
+import com.cfox.mvvmprot.base.model.MpModel
 import com.cfox.mvvmprot.base.eventdata.ActivityEventData
 import com.cfox.mvvmprot.base.eventdata.DialogEventData
 import com.cfox.mvvmprot.base.eventdata.FragmentEventData
@@ -13,14 +14,23 @@ import com.cfox.mvvmprot.utils.SingleLiveEvent
 import com.trello.rxlifecycle4.LifecycleProvider
 import java.lang.ref.WeakReference
 
-open class MpViewModel<M : MpModel>(@NonNull application: Application) : AndroidViewModel(application) , IBaseViewModel {
+open class MpViewModel<M : MpModel>(@NonNull val viewModelRequest: ViewModelRequest)
+    : AndroidViewModel(viewModelRequest.application) ,
+    IBaseViewModel {
 
-    private var model : M? = null
-    private var uiEventLiveData = UIEventLiveData()
+    protected var model : M ? = null
+    private var uiEventLiveData =
+        UIEventLiveData()
     lateinit var lifecyle : WeakReference<LifecycleProvider<*>>
 
-    constructor(application: Application, m: M): this (application) {
-        model = m
+    init {
+        viewModelRequest.getModel()?.let {
+            model = it as M
+        }
+    }
+
+    fun <SVM : MpViewModel<*>> getShareViewModel() : SVM {
+        return viewModelRequest.shareViewMode as SVM
     }
 
     override fun onCleared() {

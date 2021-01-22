@@ -1,9 +1,9 @@
 package com.cfox.appdemo.ui.login.forget
 
-import android.app.Application
 import com.cfox.appdemo.base.BaseViewModel
 import com.cfox.appdemo.data.login.RegisterUserModel
+import com.cfox.mvvmprot.base.viewmodel.ViewModelRequest
 
-class ForgetPasswordViewModel(application: Application) : BaseViewModel<RegisterUserModel>(application) {
+class ForgetPasswordViewModel(viewModelRequest: ViewModelRequest) : BaseViewModel<RegisterUserModel>(viewModelRequest) {
 
 }

@@ -1,4 +1,4 @@
-package com.cfox.mvvmprot.base
+package com.cfox.mvvmprot.base.model
 
 interface IModel {
 
