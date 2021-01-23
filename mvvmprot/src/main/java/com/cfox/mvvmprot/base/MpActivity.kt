@@ -93,21 +93,21 @@ abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompa
     }
 
     open fun onOtherEvent(eventData: IEventData) {
-        val otherStrategy = MPort.getConfig()?.getStrategyManager()?.getStrategy(StrategyType.OTHER)
+        val otherStrategy = MPort.getConfig().getStrategyManager().getStrategy(StrategyType.OTHER)
         if (otherStrategy is IOtherStrategy) {
             otherStrategy.execute(eventData)
         }
     }
 
     open fun onDialogEvent(dialogEventData: DialogEventData) {
-        val dialogStrategy = MPort.getConfig()?.getStrategyManager()?.getStrategy(StrategyType.DIALOG)
+        val dialogStrategy = MPort.getConfig().getStrategyManager().getStrategy(StrategyType.DIALOG)
         if (dialogStrategy is IDialogStrategy) {
             dialogStrategy.execute(dialogEventData)
         }
     }
 
     open fun onActivityEvent(activityEventData: ActivityEventData) {
-        val activityStrategy = MPort.getConfig()?.getStrategyManager()?.getStrategy(StrategyType.ACTIVITY)
+        val activityStrategy = MPort.getConfig().getStrategyManager().getStrategy(StrategyType.ACTIVITY)
         if (activityStrategy is IActivityStrategy) {
             activityEventData.setContext(this)
             activityEventData.buildStartIntent()
@@ -116,7 +116,7 @@ abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompa
     }
 
     open fun onFragmentEvent(fragmentEventData: FragmentEventData) {
-        val fragmentStrategy = MPort.getConfig()?.getStrategyManager()?.getStrategy(StrategyType.FRAGMENT)
+        val fragmentStrategy = MPort.getConfig().getStrategyManager().getStrategy(StrategyType.FRAGMENT)
         if (fragmentStrategy is IFragmentStrategy) {
             fragmentStrategy.execute(fragmentEventData)
         }

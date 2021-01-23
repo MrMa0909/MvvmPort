@@ -6,6 +6,9 @@ class DataPersistManager {
 
     fun setStrategy(strategy: IDataPersistStrategy) {
         this.strategy = strategy
+    }
 
+    fun getStrategy() : IDataPersistStrategy {
+        return strategy
     }
 }

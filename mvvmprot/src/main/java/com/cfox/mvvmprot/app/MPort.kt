@@ -4,7 +4,7 @@ import android.content.Context
 
 object MPort {
 
-    private var mpConfig : MpConfig ? = null
+    private var mpConfig : MpConfig = MpConfig.Builder().build()
 
     fun init(context: Context) : MPort {
         AppContext.init(context)
@@ -12,11 +12,10 @@ object MPort {
     }
 
     fun setConfig(config: MpConfig) {
-        config.init(AppContext.getContext())
         mpConfig = config
     }
 
-    internal fun getConfig() : MpConfig? {
+    internal fun getConfig() : MpConfig {
         return mpConfig
     }
 }

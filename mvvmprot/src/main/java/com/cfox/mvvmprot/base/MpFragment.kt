@@ -114,21 +114,21 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
     }
 
     open fun onOtherEvent(eventData: IEventData) {
-        val otherStrategy = MPort.getConfig()?.getStrategyManager()?.getStrategy(StrategyType.OTHER)
+        val otherStrategy = MPort.getConfig().getStrategyManager().getStrategy(StrategyType.OTHER)
         if (otherStrategy is IOtherStrategy) {
             otherStrategy.execute(eventData)
         }
     }
 
     open fun onDialogEvent(dialogEventData: DialogEventData) {
-        val dialogStrategy = MPort.getConfig()?.getStrategyManager()?.getStrategy(StrategyType.DIALOG)
+        val dialogStrategy = MPort.getConfig().getStrategyManager().getStrategy(StrategyType.DIALOG)
         if (dialogStrategy is IDialogStrategy) {
             dialogStrategy.execute(dialogEventData)
         }
     }
 
     open fun onActivityEvent(activityEventData: ActivityEventData) {
-        val activityStrategy = MPort.getConfig()?.getStrategyManager()?.getStrategy(StrategyType.ACTIVITY)
+        val activityStrategy = MPort.getConfig().getStrategyManager().getStrategy(StrategyType.ACTIVITY)
         if (activityStrategy is IActivityStrategy) {
             activityEventData.setContext(requireActivity())
             activityEventData.buildStartIntent()

@@ -42,10 +42,6 @@ class MpConfig {
         return dataPersistManager
     }
 
-    internal fun init(context: Context) {
-        
-    }
-
     class Builder {
         var activityStrategy: IActivityStrategy ? = null
         var fragmentStrategy: IFragmentStrategy ? = null
