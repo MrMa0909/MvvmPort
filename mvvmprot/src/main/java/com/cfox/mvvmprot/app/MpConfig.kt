@@ -2,19 +2,22 @@ package com.cfox.mvvmprot.app
 
 import android.content.Context
 import com.cfox.mvvmprot.base.eventstrategy.*
-import com.cfox.mvvmprot.base.eventstrategy.impl.DefaultActivityStrategy
-import com.cfox.mvvmprot.base.eventstrategy.impl.DefaultDialogStrategy
-import com.cfox.mvvmprot.base.eventstrategy.impl.DefaultFragmentStrategy
-import com.cfox.mvvmprot.base.eventstrategy.impl.DefaultOtherStrategy
 import com.cfox.mvvmprot.datapersistence.DataPersistManager
-import com.cfox.mvvmprot.datapersistence.DefaultDataPersistStrategy
 import com.cfox.mvvmprot.datapersistence.IDataPersistStrategy
 
 class MpConfig {
     private val strategyManager = MpStrategyManager()
     private val dataPersistManager = DataPersistManager()
 
+    private var isInit = false
     private constructor() {}
+
+    internal fun init(context: Context) {
+        if (!isInit) {
+            isInit = true
+            dataPersistManager.init(context)
+        }
+    }
 
     private constructor(builder: Builder) {
         builder.activityStrategy?.let {

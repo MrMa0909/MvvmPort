@@ -1,23 +1,27 @@
 package com.cfox.mvvmprot.datapersistence
 
+import android.content.Context
+
 interface IDataPersistStrategy {
 
-    fun getString(key: String, defaultValue: String ? = null) : String ?
+    fun onCreate(context: Context)
 
-    fun getStringSet(key: String, defaultValue: Set<String> ? = null) : Set<String> ?
+    fun getString(key: String, defaultValue: String?) : String ?
 
-    fun getInt(key: String, defaultValue: Int ? = null) : Int ?
+    fun getStringSet(key: String, defaultValue: Set<String> ?) : Set<String> ?
 
-    fun getLong(key: String, defaultValue: Long ? = null) : Long ?
+    fun getInt(key: String, defaultValue: Int) : Int
 
-    fun getFloat(key: String, defaultValue: Float ? = null) : Float ?
+    fun getLong(key: String, defaultValue: Long) : Long
 
-    fun getBoolean(key: String, defaultValue: Boolean ? = null) : Boolean ?
+    fun getFloat(key: String, defaultValue: Float) : Float
+
+    fun getBoolean(key: String, defaultValue: Boolean) : Boolean
 
 
-    fun putString(key: String, value: String)
+    fun putString(key: String, value: String?)
 
-    fun putStringSet(key: String, value: Set<String>)
+    fun putStringSet(key: String, value: Set<String>?)
 
     fun putInt(key: String, value: Int)
 

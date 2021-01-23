@@ -62,6 +62,7 @@ dependencies {
     api  "com.trello.rxlifecycle4:rxlifecycle:$v_rxlifecycle"
     api  "com.trello.rxlifecycle4:rxlifecycle-components:$v_rxlifecycle_components"
 
+    api "com.tencent:mmkv-static:$v_mmkv"
 
     testImplementation "junit:junit:$v_junit"
     androidTestImplementation "androidx.test.ext:junit:$v_test_ext"

@@ -1,21 +1,17 @@
 package com.cfox.mvvmprot.app
 
-import android.content.Context
+import android.app.Application
 
 object MPort {
 
-    private var mpConfig : MpConfig = MpConfig.Builder().build()
-
-    fun init(context: Context) : MPort {
-        AppContext.init(context)
-        return this
-    }
-
-    fun setConfig(config: MpConfig) {
-        mpConfig = config
+    private var mpConfigWrapper = MpConfigWrapper()
+    fun init(application: Application) : MpConfigWrapper {
+        AppContext.init(application.applicationContext)
+        mpConfigWrapper.setConfig(MpConfig.Builder().build())
+        return mpConfigWrapper
     }
 
     internal fun getConfig() : MpConfig {
-        return mpConfig
+        return mpConfigWrapper.getConfig()
     }
 }

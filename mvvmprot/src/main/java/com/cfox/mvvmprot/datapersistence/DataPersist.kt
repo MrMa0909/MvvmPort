@@ -13,27 +13,27 @@ object DataPersist  {
         return dataPersistManager.getStrategy().getStringSet(key, defaultValue)
     }
 
-    fun getInt(key: String, defaultValue: Int?): Int? {
+    fun getInt(key: String, defaultValue: Int = 0): Int {
         return dataPersistManager.getStrategy().getInt(key, defaultValue)
     }
 
-    fun getLong(key: String, defaultValue: Long?): Long? {
+    fun getLong(key: String, defaultValue: Long = 0L): Long {
         return dataPersistManager.getStrategy().getLong(key, defaultValue)
     }
 
-    fun getFloat(key: String, defaultValue: Float?): Float? {
+    fun getFloat(key: String, defaultValue: Float = 0f): Float  {
         return dataPersistManager.getStrategy().getFloat(key, defaultValue)
     }
 
-    fun getBoolean(key: String, defaultValue: Boolean?): Boolean? {
+    fun getBoolean(key: String, defaultValue: Boolean = false): Boolean {
         return dataPersistManager.getStrategy().getBoolean(key, defaultValue)
     }
 
-    fun putString(key: String, value: String) {
+    fun putString(key: String, value: String?) {
         dataPersistManager.getStrategy().putString(key, value)
     }
 
-    fun putStringSet(key: String, value: Set<String>) {
+    fun putStringSet(key: String, value: Set<String>?) {
         dataPersistManager.getStrategy().putStringSet(key, value)
     }
 

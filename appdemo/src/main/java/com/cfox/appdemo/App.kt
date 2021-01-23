@@ -3,7 +3,9 @@ package com.cfox.appdemo
 import android.app.Application
 import com.cfox.appdemo.strategy.*
 import com.cfox.mvvmprot.app.MPort
+import com.cfox.mvvmprot.app.MpApplication
 import com.cfox.mvvmprot.app.MpConfig
+import com.cfox.mvvmprot.datapersistence.DataPersist
 
 class App : Application() {
 

@@ -7,7 +7,7 @@ open class MpApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        AppContext.init(this)
+        MPort.init(this)
 
     }
 }

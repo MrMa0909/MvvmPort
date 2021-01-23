@@ -6,8 +6,11 @@ import android.view.ViewGroup
 import com.cfox.appdemo.BR
 import com.cfox.appdemo.R
 import com.cfox.appdemo.base.BaserFragment
+import com.cfox.appdemo.data.login.LoginMainModel
+import com.cfox.appdemo.data.login.LoginModel
 import com.cfox.appdemo.databinding.FragmentLoginMainBinding
 import com.cfox.appdemo.ui.login.LoginViewModel
+import com.cfox.mvvmprot.base.viewmodel.ViewModelRequest
 
 class LoginMainFragment : BaserFragment<FragmentLoginMainBinding, LoginMainViewModel>() {
     override fun initContentView(
@@ -26,5 +29,9 @@ class LoginMainFragment : BaserFragment<FragmentLoginMainBinding, LoginMainViewM
         super.initData()
 //        val sharVM = viewModel.getShareViewModel<LoginViewModel>()
         binding.tvText.setText(viewModel.getShareName())
+    }
+
+    override fun createViewModelRequest(): ViewModelRequest {
+        return ViewModelRequest().setModel(LoginMainModel())
     }
 }

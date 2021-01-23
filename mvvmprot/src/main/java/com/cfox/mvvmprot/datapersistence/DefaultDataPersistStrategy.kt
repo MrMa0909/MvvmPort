@@ -1,60 +1,80 @@
 package com.cfox.mvvmprot.datapersistence
 
+import android.content.Context
+import com.tencent.mmkv.MMKV
+
 class DefaultDataPersistStrategy : IDataPersistStrategy {
+
+    private lateinit var kv : MMKV
+    override fun onCreate(context: Context) {
+        MMKV.initialize(context)
+        kv = MMKV.defaultMMKV()!!
+    }
+
     override fun getString(key: String, defaultValue: String?): String? {
-        TODO("Not yet implemented")
+        return kv.decodeString(key,  defaultValue)
     }
 
     override fun getStringSet(key: String, defaultValue: Set<String>?): Set<String>? {
-        TODO("Not yet implemented")
+        return kv.decodeStringSet(key, defaultValue)
     }
 
-    override fun getInt(key: String, defaultValue: Int?): Int? {
-        TODO("Not yet implemented")
+    override fun getInt(key: String, defaultValue: Int): Int {
+        return kv.decodeInt(key, defaultValue)
     }
 
-    override fun getLong(key: String, defaultValue: Long?): Long? {
-        TODO("Not yet implemented")
+    override fun getLong(key: String, defaultValue: Long): Long {
+        return kv.decodeLong(key, defaultValue)
     }
 
-    override fun getFloat(key: String, defaultValue: Float?): Float? {
-        TODO("Not yet implemented")
+    override fun getFloat(key: String, defaultValue: Float): Float {
+        return kv.decodeFloat(key, defaultValue)
     }
 
-    override fun getBoolean(key: String, defaultValue: Boolean?): Boolean? {
-        TODO("Not yet implemented")
+    override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
+        return kv.decodeBool(key, defaultValue)
     }
 
-    override fun putString(key: String, value: String) {
-        TODO("Not yet implemented")
+    override fun putString(key: String, value: String?) {
+        kv.encode(key, value)
     }
 
-    override fun putStringSet(key: String, value: Set<String>) {
-        TODO("Not yet implemented")
+    override fun putStringSet(key: String, value: Set<String>?) {
+        kv.encode(key, value)
     }
 
     override fun putInt(key: String, value: Int) {
-        TODO("Not yet implemented")
+        kv.encode(key, value)
     }
 
     override fun putLong(key: String, value: Long) {
-        TODO("Not yet implemented")
+        kv.encode(key, value)
     }
 
     override fun putFloat(key: String, value: Float) {
-        TODO("Not yet implemented")
+        kv.encode(key, value)
     }
 
     override fun putBoolean(key: String, value: Boolean) {
-        TODO("Not yet implemented")
+        kv.encode(key, value)
     }
 
     override fun putMap(map: Map<String, *>) {
-        TODO("Not yet implemented")
+        map.forEach {
+            val value = it.value
+            val key = it.key
+            when(value) {
+                is String -> kv.encode(key, value)
+                is Int -> kv.encode(key, value)
+                is Long -> kv.encode(key, value)
+                is Float -> kv.encode(key, value)
+                is Boolean -> kv.encode(key, value)
+            }
+        }
     }
 
     override fun remove(key: String) {
-        TODO("Not yet implemented")
+        kv.removeValueForKey(key)
     }
 
 }
