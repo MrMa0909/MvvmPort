@@ -3,7 +3,7 @@ package com.cfox.mvvmprot.datapersistence
 import android.content.Context
 import com.tencent.mmkv.MMKV
 
-class DefaultDataPersistStrategy : IDataPersistStrategy {
+internal class DefaultDataPersistStrategy : IDataPersistStrategy {
 
     private lateinit var kv : MMKV
     override fun onCreate(context: Context) {

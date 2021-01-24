@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import java.lang.reflect.InvocationTargetException
 
-class ViewModelFactory(val vmrMethod : () -> ViewModelRequest) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory(private val vmrMethod : () -> ViewModelRequest) : ViewModelProvider.NewInstanceFactory() {
 
     companion object {
         fun  checkApplication(activity : Activity) : Application {

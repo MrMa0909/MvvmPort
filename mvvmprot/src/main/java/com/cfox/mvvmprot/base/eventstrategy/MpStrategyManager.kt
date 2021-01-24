@@ -7,7 +7,7 @@ import com.cfox.mvvmprot.base.eventstrategy.impl.DefaultDialogStrategy
 import com.cfox.mvvmprot.base.eventstrategy.impl.DefaultFragmentStrategy
 import com.cfox.mvvmprot.base.eventstrategy.impl.DefaultOtherStrategy
 
-class MpStrategyManager {
+internal class MpStrategyManager {
 
     private val strategyMap = mutableMapOf<Int, IStrategy<*>>()
 

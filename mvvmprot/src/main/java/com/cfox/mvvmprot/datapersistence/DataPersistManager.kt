@@ -2,7 +2,7 @@ package com.cfox.mvvmprot.datapersistence
 
 import android.content.Context
 
-class DataPersistManager {
+internal class DataPersistManager {
 
     private var strategy : IDataPersistStrategy = DefaultDataPersistStrategy()
 

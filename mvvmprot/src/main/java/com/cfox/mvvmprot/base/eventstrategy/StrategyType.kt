@@ -1,6 +1,6 @@
 package com.cfox.mvvmprot.base.eventstrategy
 
-sealed class StrategyType(private val type: Int) {
+internal sealed class StrategyType(private val type: Int) {
 
     open fun getType() : Int {
         return type
