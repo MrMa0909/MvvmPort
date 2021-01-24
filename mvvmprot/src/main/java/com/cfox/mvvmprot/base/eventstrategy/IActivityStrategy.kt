@@ -1,7 +1,7 @@
 package com.cfox.mvvmprot.base.eventstrategy
 
-import com.cfox.mvvmprot.base.eventdata.ActivityEventData
+import com.cfox.mvvmprot.base.uievent.ActivityEventRequest
 
 interface IActivityStrategy :
-    IStrategy<ActivityEventData> {
+    IStrategy<ActivityEventRequest> {
 }

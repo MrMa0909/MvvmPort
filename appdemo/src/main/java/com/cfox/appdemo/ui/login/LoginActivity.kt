@@ -17,8 +17,4 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel> () {
     override fun initVariableId(): Int {
         return BR.viewModel
     }
-
-    override fun createViewModelRequest(): ViewModelRequest {
-        return ViewModelRequest().setModel(LoginModel())
-    }
 }

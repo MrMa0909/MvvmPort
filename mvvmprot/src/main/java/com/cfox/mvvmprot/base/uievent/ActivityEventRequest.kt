@@ -1,4 +1,4 @@
-package com.cfox.mvvmprot.base.eventdata
+package com.cfox.mvvmprot.base.uievent
 
 import android.content.Context
 import android.content.Intent
@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import java.io.Serializable
 
-open class ActivityEventData : IEventData {
+open class ActivityEventRequest : IEventRequest {
 
     private var startMode : StartMode = StartMode.DEFAULT
 

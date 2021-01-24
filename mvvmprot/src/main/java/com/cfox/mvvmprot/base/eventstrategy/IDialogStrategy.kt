@@ -1,7 +1,7 @@
 package com.cfox.mvvmprot.base.eventstrategy
 
-import com.cfox.mvvmprot.base.eventdata.DialogEventData
+import com.cfox.mvvmprot.base.uievent.DialogEventRequest
 
 interface IDialogStrategy :
-    IStrategy<DialogEventData> {
+    IStrategy<DialogEventRequest> {
 }

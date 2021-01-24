@@ -1,7 +1,7 @@
 package com.cfox.mvvmprot.base.eventstrategy
 
-import com.cfox.mvvmprot.base.eventdata.IEventData
+import com.cfox.mvvmprot.base.uievent.IEventRequest
 
 interface IOtherStrategy :
-    IStrategy<IEventData> {
+    IStrategy<IEventRequest> {
 }

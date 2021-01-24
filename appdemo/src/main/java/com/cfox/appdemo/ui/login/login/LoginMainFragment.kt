@@ -30,8 +30,4 @@ class LoginMainFragment : BaserFragment<FragmentLoginMainBinding, LoginMainViewM
 //        val sharVM = viewModel.getShareViewModel<LoginViewModel>()
         binding.tvText.setText(viewModel.getShareName())
     }
-
-    override fun createViewModelRequest(): ViewModelRequest {
-        return ViewModelRequest().setModel(LoginMainModel())
-    }
 }
