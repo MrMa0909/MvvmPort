@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import java.io.Serializable
 
-open class ActivityEventRequest : IEventRequest {
+open class ActivityEvent : IUIEvent {
 
     private var startMode : StartMode = StartMode.DEFAULT
 

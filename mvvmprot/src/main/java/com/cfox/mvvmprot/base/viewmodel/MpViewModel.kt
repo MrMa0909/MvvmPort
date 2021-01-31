@@ -6,10 +6,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.cfox.mvvmprot.base.IBaseViewModel
 import com.cfox.mvvmprot.base.model.MpModel
-import com.cfox.mvvmprot.base.uievent.ActivityEventRequest
-import com.cfox.mvvmprot.base.uievent.DialogEventRequest
-import com.cfox.mvvmprot.base.uievent.FragmentEventRequest
-import com.cfox.mvvmprot.base.uievent.IEventRequest
+import com.cfox.mvvmprot.base.uievent.ActivityEvent
+import com.cfox.mvvmprot.base.uievent.DialogEvent
+import com.cfox.mvvmprot.base.uievent.FragmentEvent
+import com.cfox.mvvmprot.base.uievent.IUIEvent
 import com.cfox.mvvmprot.utils.SingleLiveEvent
 import com.trello.rxlifecycle4.LifecycleProvider
 import java.lang.ref.WeakReference
@@ -64,19 +64,19 @@ open class MpViewModel<M : MpModel>(@NonNull val viewModelRequest: ViewModelRequ
         return uiEventLiveData
     }
 
-    fun runDialogEvent(dialogEventRequest: DialogEventRequest){
-        uiEventLiveData.getDialogEvent().postValue(dialogEventRequest)
+    fun runDialogEvent(dialogEvent: DialogEvent){
+        uiEventLiveData.getDialogEvent().postValue(dialogEvent)
     }
 
-    fun runActivityEvent(activityEventRequest: ActivityEventRequest) {
-        uiEventLiveData.getActivityEvent().postValue(activityEventRequest)
+    fun runActivityEvent(activityEvent: ActivityEvent) {
+        uiEventLiveData.getActivityEvent().postValue(activityEvent)
     }
 
-    fun runFragmentEvent(fragmentEventRequest: FragmentEventRequest) {
-        uiEventLiveData.getFragmentEvent().postValue(fragmentEventRequest)
+    fun runFragmentEvent(fragmentEvent: FragmentEvent) {
+        uiEventLiveData.getFragmentEvent().postValue(fragmentEvent)
     }
 
-    fun runOtherEvent(iEventRequest: IEventRequest) {
+    fun runOtherEvent(iEventRequest: IUIEvent) {
         uiEventLiveData.getOtherEvent().postValue(iEventRequest)
     }
 
@@ -88,23 +88,23 @@ open class MpViewModel<M : MpModel>(@NonNull val viewModelRequest: ViewModelRequ
         uiEventLiveData.getBackPressedEvent().call()
     }
 
-    class UIEventLiveData : SingleLiveEvent<IEventRequest>() {
-        private val dialogEvent = SingleLiveEvent<DialogEventRequest>()
-        private var activityEvent = SingleLiveEvent<ActivityEventRequest>()
-        private var fragmentEvent = SingleLiveEvent<FragmentEventRequest>()
+    class UIEventLiveData : SingleLiveEvent<IUIEvent>() {
+        private val dialogEvent = SingleLiveEvent<DialogEvent>()
+        private var activityEvent = SingleLiveEvent<ActivityEvent>()
+        private var fragmentEvent = SingleLiveEvent<FragmentEvent>()
         private var finishEvent = SingleLiveEvent<Unit>()
         private var onBackPressedEvent = SingleLiveEvent<Unit>()
-        private var otherEvent = SingleLiveEvent<IEventRequest>()
+        private var otherEvent = SingleLiveEvent<IUIEvent>()
 
-        fun getDialogEvent() : SingleLiveEvent<DialogEventRequest> {
+        fun getDialogEvent() : SingleLiveEvent<DialogEvent> {
             return dialogEvent
         }
 
-        fun getActivityEvent() : SingleLiveEvent<ActivityEventRequest> {
+        fun getActivityEvent() : SingleLiveEvent<ActivityEvent> {
             return activityEvent
         }
 
-        fun getFragmentEvent() : SingleLiveEvent<FragmentEventRequest> {
+        fun getFragmentEvent() : SingleLiveEvent<FragmentEvent> {
             return fragmentEvent
         }
 
@@ -116,7 +116,7 @@ open class MpViewModel<M : MpModel>(@NonNull val viewModelRequest: ViewModelRequ
             return onBackPressedEvent
         }
 
-        fun getOtherEvent() : SingleLiveEvent<IEventRequest> {
+        fun getOtherEvent() : SingleLiveEvent<IUIEvent> {
             return otherEvent
         }
     }

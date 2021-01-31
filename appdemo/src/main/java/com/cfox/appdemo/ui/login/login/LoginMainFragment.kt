@@ -28,6 +28,6 @@ class LoginMainFragment : BaserFragment<FragmentLoginMainBinding, LoginMainViewM
     override fun initData() {
         super.initData()
 //        val sharVM = viewModel.getShareViewModel<LoginViewModel>()
-        binding.tvText.setText(viewModel.getShareName())
+
     }
 }

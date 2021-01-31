@@ -11,11 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import com.cfox.mvvmprot.app.MPort
-import com.cfox.mvvmprot.base.uievent.ActivityEventRequest
-import com.cfox.mvvmprot.base.uievent.DialogEventRequest
-import com.cfox.mvvmprot.base.uievent.FragmentEventRequest
-import com.cfox.mvvmprot.base.uievent.IEventRequest
 import com.cfox.mvvmprot.base.eventstrategy.*
+import com.cfox.mvvmprot.base.uievent.*
 import com.cfox.mvvmprot.base.viewmodel.MpViewModel
 import com.cfox.mvvmprot.base.viewmodel.ViewModelRequest
 import com.cfox.mvvmprot.base.viewmodel.ViewModelFactory
@@ -84,10 +81,9 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
 
     private fun registerUIEventLiveDataCallBack() {
         viewModel.let {
-            it.getUEvent().getFinishEvent().observe(this,
-                Observer {
-                    activity?.finish()
-                })
+            it.getUEvent().getFinishEvent().observe(this, Observer {
+                activity?.finish()
+            })
 
             it.getUEvent().getBackPressedEvent().observe(this, Observer {
                 activity?.onBackPressed()
@@ -111,33 +107,38 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
         }
     }
 
-    open fun onOtherEvent(eventRequest: IEventRequest) {
+    open fun onOtherEvent(iuiEvent: IUIEvent) {
         val otherStrategy = MPort.getConfig().getStrategyManager().getStrategy(StrategyType.OTHER)
         if (otherStrategy is IOtherStrategy) {
-            otherStrategy.execute(eventRequest)
+            otherStrategy.execute(iuiEvent)
         }
     }
 
-    open fun onDialogEvent(dialogEventRequest: DialogEventRequest) {
+    open fun onDialogEvent(dialogEvent: DialogEvent) {
         val dialogStrategy = MPort.getConfig().getStrategyManager().getStrategy(StrategyType.DIALOG)
         if (dialogStrategy is IDialogStrategy) {
-            dialogStrategy.execute(dialogEventRequest)
+            dialogStrategy.execute(dialogEvent)
         }
     }
 
-    open fun onActivityEvent(activityEventRequest: ActivityEventRequest) {
+    open fun onActivityEvent(activityEvent: ActivityEvent) {
         val activityStrategy = MPort.getConfig().getStrategyManager().getStrategy(StrategyType.ACTIVITY)
         if (activityStrategy is IActivityStrategy) {
-            activityEventRequest.setContext(requireActivity())
-            activityEventRequest.buildStartIntent()
-            activityStrategy.execute(activityEventRequest)
+            activityEvent.setContext(requireActivity())
+            activityEvent.buildStartIntent()
+            activityStrategy.execute(activityEvent)
         }
     }
 
-    open fun onFragmentEvent(fragmentEventRequest: FragmentEventRequest) {
+    open fun onFragmentEvent(fragmentEvent: FragmentEvent) {
         val fragmentStrategy = MPort.getConfig()?.getStrategyManager()?.getStrategy(StrategyType.FRAGMENT)
         if (fragmentStrategy is IFragmentStrategy) {
-            fragmentStrategy.execute(fragmentEventRequest)
+
+            if (fragmentEvent is OrigFragmentEvent) {
+                fragmentEvent.setFragmentManager(fragmentManager!!)
+            }
+
+            fragmentStrategy.execute(fragmentEvent)
         }
     }
 
