@@ -6,10 +6,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.cfox.mvvmprot.base.IBaseViewModel
 import com.cfox.mvvmprot.base.model.MpModel
-import com.cfox.mvvmprot.base.uievent.ActivityEvent
-import com.cfox.mvvmprot.base.uievent.DialogEvent
-import com.cfox.mvvmprot.base.uievent.FragmentEvent
-import com.cfox.mvvmprot.base.uievent.IUIEvent
+import com.cfox.mvvmprot.base.strategy.uievent.ActivityEvent
+import com.cfox.mvvmprot.base.strategy.uievent.DialogEvent
+import com.cfox.mvvmprot.base.strategy.uievent.FragmentEvent
+import com.cfox.mvvmprot.base.strategy.uievent.IUIEvent
 import com.cfox.mvvmprot.utils.SingleLiveEvent
 import com.trello.rxlifecycle4.LifecycleProvider
 import java.lang.ref.WeakReference

@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import com.cfox.mvvmprot.app.MPort
-import com.cfox.mvvmprot.base.eventstrategy.*
-import com.cfox.mvvmprot.base.uievent.*
+import com.cfox.mvvmprot.base.strategy.uievent.*
 import com.cfox.mvvmprot.base.viewmodel.MpViewModel
 import com.cfox.mvvmprot.base.viewmodel.ViewModelRequest
 import com.cfox.mvvmprot.base.viewmodel.ViewModelFactory
@@ -90,57 +88,62 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
             })
 
             it.getUEvent().getActivityEvent().observe(this, Observer { activityEventData ->
-                onActivityEvent(activityEventData)
+                activityEvent(activityEventData)
             })
 
             it.getUEvent().getFragmentEvent().observe(this, Observer { fragmentEventData ->
-                onFragmentEvent(fragmentEventData)
+                fragmentEvent(fragmentEventData)
             })
 
             it.getUEvent().getDialogEvent().observe(this, Observer { dialogEventData ->
-                onDialogEvent(dialogEventData)
+                dialogEvent(dialogEventData)
             })
 
             it.getUEvent().getOtherEvent().observe(this, Observer { uiEventData ->
-                onOtherEvent(uiEventData)
+                otherEvent(uiEventData)
             })
         }
     }
 
-    open fun onOtherEvent(iuiEvent: IUIEvent) {
-        val otherStrategy = MPort.getConfig().getStrategyManager().getStrategy(StrategyType.OTHER)
-        if (otherStrategy is IOtherStrategy) {
-            otherStrategy.execute(iuiEvent)
-        }
-    }
-
-    open fun onDialogEvent(dialogEvent: DialogEvent) {
-        val dialogStrategy = MPort.getConfig().getStrategyManager().getStrategy(StrategyType.DIALOG)
-        if (dialogStrategy is IDialogStrategy) {
-            dialogStrategy.execute(dialogEvent)
-        }
-    }
-
-    open fun onActivityEvent(activityEvent: ActivityEvent) {
-        val activityStrategy = MPort.getConfig().getStrategyManager().getStrategy(StrategyType.ACTIVITY)
-        if (activityStrategy is IActivityStrategy) {
-            activityEvent.setContext(requireActivity())
-            activityEvent.buildStartIntent()
-            activityStrategy.execute(activityEvent)
-        }
-    }
-
-    open fun onFragmentEvent(fragmentEvent: FragmentEvent) {
-        val fragmentStrategy = MPort.getConfig()?.getStrategyManager()?.getStrategy(StrategyType.FRAGMENT)
-        if (fragmentStrategy is IFragmentStrategy) {
-
-            if (fragmentEvent is OrigFragmentEvent) {
-                fragmentEvent.setFragmentManager(fragmentManager!!)
+    private fun otherEvent(uiEvent : IUIEvent) {
+        if (!onOtherEvent(uiEvent)) {
+            if (activity is MpActivity<*,*>) {
+                (activity as MpActivity<*, *>).otherEvent(uiEvent)
             }
-
-            fragmentStrategy.execute(fragmentEvent)
         }
     }
+
+    private fun dialogEvent(dialogEvent: DialogEvent) {
+        if (!onDialogEvent(dialogEvent)) {
+            if (activity is MpActivity<*,*>) {
+                (activity as MpActivity<*, *>).dialogEvent(dialogEvent)
+            }
+        }
+    }
+
+    private fun activityEvent(activityEvent: ActivityEvent) {
+        if (!onActivityEvent(activityEvent)) {
+            if (activity is MpActivity<*,*>) {
+                (activity as MpActivity<*, *>).activityEvent(activityEvent)
+            }
+        }
+    }
+
+    private fun fragmentEvent(fragmentEvent: FragmentEvent) {
+        if (!onFragmentEvent(fragmentEvent)) {
+            if (activity is MpActivity<*,*>) {
+                (activity as MpActivity<*, *>).fragmentEvent(fragmentEvent)
+            }
+        }
+    }
+
+    open fun onOtherEvent(iuiEvent : IUIEvent) : Boolean = false
+
+    open fun onDialogEvent(dialogEvent: DialogEvent) : Boolean = false
+
+    open fun onActivityEvent(activityEvent: ActivityEvent) : Boolean = false
+
+    open fun onFragmentEvent(fragmentEvent : FragmentEvent): Boolean = false
 
     /**
      * 初始化根布局

@@ -1,4 +1,4 @@
-package com.cfox.mvvmprot.base.eventstrategy
+package com.cfox.mvvmprot.base.strategy
 
 internal sealed class StrategyType(private val type: Int) {
 

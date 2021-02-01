@@ -13,8 +13,8 @@ class App : Application() {
         super.onCreate()
 
         val mpConfigBuilder = MpConfig.Builder()
-//        mpConfigBuilder.activityStrategy = AppActivityStrategy()
-//        mpConfigBuilder.fragmentStrategy = AppFragmentStrategy()
+        mpConfigBuilder.activityStrategy = AppActivityStrategy()
+        mpConfigBuilder.fragmentStrategy = AppFragmentStrategy()
 //        mpConfigBuilder.dialogStrategy = AppDialogStrategy()
 //        mpConfigBuilder.otherStrategy = AppOtherStrategy()
 //        mpConfigBuilder.dataPersistStrategy = AppDataPersistStrategy()

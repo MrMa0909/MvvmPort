@@ -1,9 +1,10 @@
 package com.cfox.mvvmprot.app
 
 import android.content.Context
-import com.cfox.mvvmprot.base.eventstrategy.*
+import com.cfox.mvvmprot.base.strategy.*
 import com.cfox.mvvmprot.datapersistence.DataPersistManager
 import com.cfox.mvvmprot.datapersistence.IDataPersistStrategy
+import com.trello.rxlifecycle4.android.ActivityEvent
 
 class MpConfig {
     private val strategyManager = MpStrategyManager()
@@ -21,16 +22,16 @@ class MpConfig {
 
     private constructor(builder: Builder) {
         builder.activityStrategy?.let {
-            strategyManager.setStrategy(StrategyType.ACTIVITY, it)
+            strategyManager.addStrategy(StrategyType.ACTIVITY, it)
         }
         builder.fragmentStrategy?.let {
-            strategyManager.setStrategy(StrategyType.FRAGMENT, it)
+            strategyManager.addStrategy(StrategyType.FRAGMENT, it)
         }
         builder.dialogStrategy?.let {
-            strategyManager.setStrategy(StrategyType.DIALOG, it)
+            strategyManager.addStrategy(StrategyType.DIALOG, it)
         }
         builder.otherStrategy?.let {
-            strategyManager.setStrategy(StrategyType.OTHER, it)
+            strategyManager.addStrategy(StrategyType.OTHER, it)
         }
         builder.dataPersistStrategy?.let {
             dataPersistManager.setStrategy(it)
@@ -46,10 +47,10 @@ class MpConfig {
     }
 
     class Builder {
-        var activityStrategy: IActivityStrategy ? = null
-        var fragmentStrategy: IFragmentStrategy ? = null
-        var dialogStrategy: IDialogStrategy ? = null
-        var otherStrategy: IOtherStrategy ? = null
+        var activityStrategy: IActivityStrategy<*> ? = null
+        var fragmentStrategy: IFragmentStrategy<*> ? = null
+        var dialogStrategy: IDialogStrategy<*> ? = null
+        var otherStrategy: IOtherStrategy<*> ? = null
         var dataPersistStrategy : IDataPersistStrategy? = null
         fun build() : MpConfig {
             return MpConfig(this)

@@ -1,4 +1,4 @@
-package com.cfox.mvvmprot.base.uievent
+package com.cfox.mvvmprot.base.strategy.uievent
 
 open class NavFragmentEvent : FragmentEvent() {
 

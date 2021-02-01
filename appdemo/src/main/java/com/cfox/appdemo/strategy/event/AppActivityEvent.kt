@@ -1,21 +1,20 @@
-package com.cfox.mvvmprot.base.uievent
+package com.cfox.appdemo.strategy.event
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import com.cfox.mvvmprot.base.strategy.uievent.ActivityEvent
 import java.io.Serializable
 
-open class ActivityEvent : IUIEvent {
+class AppActivityEvent : ActivityEvent {
+
 
     private var startMode : StartMode = StartMode.DEFAULT
 
-    private var content : Context ? = null
-    private var intent : Intent ? = null
     private var cls : Class<*> ? = null
     private var className : String ? = null
     private var intentFlags: Int ? = null
-    private var intentExtras: Bundle ? = null
+    private var intentExtras: Bundle? = null
     private var params: List<Pair<String, Any>?> ? = null
 
     private constructor(){}
@@ -32,29 +31,23 @@ open class ActivityEvent : IUIEvent {
         this.className = className
     }
 
-    internal fun setContext(context: Context?) {
-        this.content = context
-    }
-
-    fun getContext() : Context ? {
-        return content
-    }
-
     fun setParams(params : List<Pair<String, Any>?>) {
         this.params = params
     }
 
-    internal fun buildStartIntent() {
-        intent = createIntent()
+    fun buildStartIntent() : Intent {
+        val intent = createIntent()
         cls?.let {
-            intent?.setClass(content!!, it)
+            intent.setClass(getContext()!!, it)
         }
 
         className?.let {
-            intent?.setClassName(content!!, it)
+            intent.setClassName(getContext()!!, it)
         }
 
-        addParamsToIntent()
+        addParamsToIntent(intent)
+
+        return intent
 
     }
 
@@ -70,8 +63,8 @@ open class ActivityEvent : IUIEvent {
         }
     }
 
-    private fun addParamsToIntent() {
-        intent?.apply {
+    private fun addParamsToIntent(intent: Intent) {
+        intent.apply {
             params?.let {
                 for (pair in it)
                     pair?.let {
@@ -109,9 +102,6 @@ open class ActivityEvent : IUIEvent {
         }
     }
 
-    fun getActivityIntent() : Intent? {
-        return intent
-    }
 
     fun getStartMode() : StartMode {
         return startMode
@@ -120,6 +110,7 @@ open class ActivityEvent : IUIEvent {
 
     sealed class StartMode {
         object DEFAULT : StartMode()
-        class FOR_RESULT(val requestCode : Int, val bundle: Bundle ? = null) : StartMode()
+        class FOR_RESULT(val requestCode : Int, val bundle: Bundle? = null) : StartMode()
     }
+
 }
