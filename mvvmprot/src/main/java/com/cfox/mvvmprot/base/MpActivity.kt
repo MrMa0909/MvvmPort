@@ -120,7 +120,7 @@ abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompa
 
     internal fun fragmentEvent(fragmentEvent : FragmentEvent) {
         if (fragmentEvent is OrigFragmentEvent) {
-            fragmentEvent.setActivityName(this.javaClass.simpleName)
+            fragmentEvent.setActivityName(this.javaClass.name)
             fragmentEvent.setFragmentManager(supportFragmentManager)
         }
         if (!onFragmentEvent(fragmentEvent)) {

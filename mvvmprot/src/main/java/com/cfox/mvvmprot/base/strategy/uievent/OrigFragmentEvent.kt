@@ -2,7 +2,7 @@ package com.cfox.mvvmprot.base.strategy.uievent
 
 import androidx.fragment.app.FragmentManager
 
-open class OrigFragmentEvent : FragmentEvent() {
+abstract class OrigFragmentEvent : FragmentEvent() {
 
     private lateinit var fragmentManager : FragmentManager
     private lateinit var activityName: String

@@ -1,4 +1,4 @@
-package com.cfox.appdemo.strategy.event
+package com.cfox.mvvmprot.base.strategy.impl.event
 
 import android.content.Intent
 import android.os.Bundle
@@ -19,7 +19,7 @@ class AppActivityEvent : ActivityEvent {
 
     private constructor(){}
 
-    private constructor(startMode: StartMode = StartMode.DEFAULT) {
+    private constructor(startMode: StartMode) {
         this.startMode = startMode
     }
 

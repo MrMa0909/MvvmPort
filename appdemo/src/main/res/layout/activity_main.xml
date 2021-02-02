@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -7,18 +9,47 @@
             type="com.cfox.appdemo.ui.main.MainViewModel" />
 
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.main.MainActivity">
 
         <Button
-            android:text="open login"
+            android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:onClickCommand="@{viewModel.loginBtnClick}"/>
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="open login"
+            app:onClickCommand="@{viewModel.loginBtnClick}" />
+
+        <Button
+            android:id="@+id/show_fragment1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/button"
+            android:text="show 1"
+            app:onClickCommand="@{viewModel.show1BtnClick}" />
+
+        <Button
+            android:id="@+id/show_fragment2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/show_fragment1"
+            android:text="show 2"
+            app:onClickCommand="@{viewModel.show2BtnClick}" />
+
+
+        <FrameLayout
+            android:id="@+id/head_fragment1"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintTop_toBottomOf="@+id/show_fragment2" />
+
+        <FrameLayout
+            android:id="@+id/head_fragment2"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintTop_toBottomOf="@+id/head_fragment1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

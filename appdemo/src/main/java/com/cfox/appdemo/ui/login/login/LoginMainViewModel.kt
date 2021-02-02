@@ -18,8 +18,4 @@ class LoginMainViewModel(viewModelRequest: ViewModelRequest) : BaseViewModel<Log
         }
     })
 
-    fun getShareName() : String {
-        return shareViewModel.getModelName()
-    }
-
 }

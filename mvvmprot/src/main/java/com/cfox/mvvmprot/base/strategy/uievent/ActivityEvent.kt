@@ -2,7 +2,7 @@ package com.cfox.mvvmprot.base.strategy.uievent
 
 import android.content.Context
 
-open class ActivityEvent : IUIEvent {
+abstract class ActivityEvent : IUIEvent {
 
     private var content : Context ? = null
 
