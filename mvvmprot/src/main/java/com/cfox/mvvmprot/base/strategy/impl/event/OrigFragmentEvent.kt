@@ -1,8 +1,8 @@
 package com.cfox.mvvmprot.base.strategy.impl.event
 
-import com.cfox.mvvmprot.base.strategy.uievent.OrigFragmentEvent
+import com.cfox.mvvmprot.base.strategy.uievent.FragmentEvent
 
-class AppOrigFragmentEvent(private val requestType: RequestType, private val groupName: String = "") : OrigFragmentEvent() {
+class OrigFragmentEvent(private val requestType: RequestType, private val groupName: String = "") : FragmentEvent() {
 
     fun addBackStack() {
 

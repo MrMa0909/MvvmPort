@@ -5,8 +5,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
+import androidx.navigation.findNavController
 import com.cfox.mvvmprot.app.MPort
 import com.cfox.mvvmprot.base.strategy.*
+import com.cfox.mvvmprot.base.strategy.impl.event.NavFragmentEvent
 import com.cfox.mvvmprot.base.strategy.uievent.*
 import com.cfox.mvvmprot.base.viewmodel.MpViewModel
 import com.cfox.mvvmprot.base.viewmodel.ViewModelRequest
@@ -119,17 +121,14 @@ abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompa
     }
 
     internal fun fragmentEvent(fragmentEvent : FragmentEvent) {
-        if (fragmentEvent is OrigFragmentEvent) {
-            fragmentEvent.setActivityName(this.javaClass.name)
-            fragmentEvent.setFragmentManager(supportFragmentManager)
-        }
+        fragmentEvent.setActivityName(this.javaClass.name)
+        fragmentEvent.setFragmentManager(supportFragmentManager)
         if (!onFragmentEvent(fragmentEvent)) {
             val fragmentStrategy = MPort.getConfig().getStrategyManager().getStrategy<FragmentEvent>(StrategyType.FRAGMENT)
             if (fragmentStrategy is IFragmentStrategy) {
                 fragmentStrategy.execute(fragmentEvent)
             }
         }
-
     }
 
     open fun onOtherEvent(iuiEvent : IUIEvent) : Boolean = false

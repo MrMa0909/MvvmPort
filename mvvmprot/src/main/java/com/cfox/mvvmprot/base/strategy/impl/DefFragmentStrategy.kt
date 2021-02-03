@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment
 
 import com.cfox.mvvmprot.base.strategy.uievent.FragmentEvent
 import com.cfox.mvvmprot.base.strategy.IFragmentStrategy
-import com.cfox.mvvmprot.base.strategy.impl.event.AppOrigFragmentEvent
-import com.cfox.mvvmprot.base.strategy.uievent.NavFragmentEvent
+import com.cfox.mvvmprot.base.strategy.impl.event.OrigFragmentEvent
+import com.cfox.mvvmprot.base.strategy.impl.event.NavFragmentEvent
 
 class DefFragmentStrategy : IFragmentStrategy<FragmentEvent> {
 
@@ -17,17 +17,17 @@ class DefFragmentStrategy : IFragmentStrategy<FragmentEvent> {
     private val fragmentTreeMap = mutableMapOf<String, MutableMap<String, String>>()
 
     override fun execute(request: FragmentEvent) {
-        if (request is AppOrigFragmentEvent) {
+        if (request is OrigFragmentEvent) {
             origAction(request)
         } else if (request is NavFragmentEvent) {
             navAction(request)
         }
     }
 
-    private fun origAction(request: AppOrigFragmentEvent) {
+    private fun origAction(request: OrigFragmentEvent) {
         val fm = request.getFragmentManager()
         val ft = fm.beginTransaction()
-        if (request.getRequestType() is AppOrigFragmentEvent.RequestType.SHOW) {
+        if (request.getRequestType() is OrigFragmentEvent.RequestType.SHOW) {
             val currentFragmentTag = getCurrentGroupFragmentTag(request)
             if (currentFragmentTag.isNotEmpty()) {
                 val currentFragment = fm.findFragmentByTag(currentFragmentTag)
@@ -52,7 +52,7 @@ class DefFragmentStrategy : IFragmentStrategy<FragmentEvent> {
         }
     }
 
-    private fun getCurrentGroupFragmentTag(request: AppOrigFragmentEvent): String {
+    private fun getCurrentGroupFragmentTag(request: OrigFragmentEvent): String {
         var result: String = ""
         val rootGroup = fragmentTreeMap[request.getActivityName()]
         if (rootGroup != null) {
@@ -61,7 +61,7 @@ class DefFragmentStrategy : IFragmentStrategy<FragmentEvent> {
         return result
     }
 
-    private fun setCurrentGroupFragmentTag(request: AppOrigFragmentEvent) {
+    private fun setCurrentGroupFragmentTag(request: OrigFragmentEvent) {
         val rootGroup = fragmentTreeMap[request.getActivityName()]
         if (rootGroup != null) {
             rootGroup[request.getGroupName()] = request.getTag()
@@ -72,6 +72,10 @@ class DefFragmentStrategy : IFragmentStrategy<FragmentEvent> {
     }
 
     private fun navAction(request: NavFragmentEvent) {
+
+        request.getNavController()?.let {
+            it.navigate(request.actionId)
+        }
 
     }
 

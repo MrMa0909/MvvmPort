@@ -64,7 +64,14 @@
         </LinearLayout>
 
         <Button
-            onClickCommand="@{viewModel.btnRegister"
+            android:text="注册"
+            app:onClickCommand="@{viewModel.btnRegister}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:text="忘记密码"
+            app:onClickCommand="@{viewModel.btnForget}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

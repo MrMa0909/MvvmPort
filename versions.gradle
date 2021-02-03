@@ -20,6 +20,8 @@ ext.v_mmkv = "1.2.7"
 ext.v_androidx_core_ktx = "1.3.1"
 ext.v_androidx_appcompat = '1.2.0'
 ext.v_androidx_constraint_layout = '2.0.1'
+ext.v_androidx_nav = "2.3.2"
+ext.v_androidx_nav_compose = "1.0.0-alpha06"
 
 ext.v_rxbinding = "2.1.1"
 ext.v_rxjava = "2.2.10"
