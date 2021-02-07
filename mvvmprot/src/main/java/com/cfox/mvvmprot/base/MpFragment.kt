@@ -113,7 +113,7 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
         }
     }
 
-    private fun dialogEvent(dialogEvent: DialogEvent) {
+    private fun dialogEvent(dialogEvent: AbsDialogEvent) {
         if (!onDialogEvent(dialogEvent)) {
             if (activity is MpActivity<*,*>) {
                 (activity as MpActivity<*, *>).dialogEvent(dialogEvent)
@@ -121,7 +121,7 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
         }
     }
 
-    private fun activityEvent(activityEvent: ActivityEvent) {
+    private fun activityEvent(activityEvent: AbsActivityEvent) {
         if (!onActivityEvent(activityEvent)) {
             if (activity is MpActivity<*,*>) {
                 (activity as MpActivity<*, *>).activityEvent(activityEvent)
@@ -129,7 +129,7 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
         }
     }
 
-    private fun fragmentEvent(fragmentEvent: FragmentEvent) {
+    private fun fragmentEvent(fragmentEvent: AbsFragmentEvent) {
         if (!onFragmentEvent(fragmentEvent)) {
             if (activity is MpActivity<*,*>) {
                 (activity as MpActivity<*, *>).fragmentEvent(fragmentEvent)
@@ -139,11 +139,11 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
 
     open fun onOtherEvent(iuiEvent : IUIEvent) : Boolean = false
 
-    open fun onDialogEvent(dialogEvent: DialogEvent) : Boolean = false
+    open fun onDialogEvent(dialogEvent: AbsDialogEvent) : Boolean = false
 
-    open fun onActivityEvent(activityEvent: ActivityEvent) : Boolean = false
+    open fun onActivityEvent(activityEvent: AbsActivityEvent) : Boolean = false
 
-    open fun onFragmentEvent(fragmentEvent : FragmentEvent): Boolean = false
+    open fun onFragmentEvent(fragmentEvent : AbsFragmentEvent): Boolean = false
 
     /**
      * 初始化根布局

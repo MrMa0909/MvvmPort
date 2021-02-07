@@ -1,13 +1,20 @@
 package com.cfox.mvvmprot.base.strategy.impl
 
+import android.util.Log
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 
-import com.cfox.mvvmprot.base.strategy.uievent.FragmentEvent
+import com.cfox.mvvmprot.base.strategy.uievent.AbsFragmentEvent
 import com.cfox.mvvmprot.base.strategy.IFragmentStrategy
 import com.cfox.mvvmprot.base.strategy.impl.event.OrigFragmentEvent
 import com.cfox.mvvmprot.base.strategy.impl.event.NavFragmentEvent
 
-class DefFragmentStrategy : IFragmentStrategy<FragmentEvent> {
+class DefFragmentStrategy : IFragmentStrategy<AbsFragmentEvent> {
+
+    companion object {
+        private const val TAG = "DefFragmentStrategy"
+    }
 
     /**
      * activity
@@ -16,7 +23,7 @@ class DefFragmentStrategy : IFragmentStrategy<FragmentEvent> {
      */
     private val fragmentTreeMap = mutableMapOf<String, MutableMap<String, String>>()
 
-    override fun execute(request: FragmentEvent) {
+    override fun execute(request: AbsFragmentEvent) {
         if (request is OrigFragmentEvent) {
             origAction(request)
         } else if (request is NavFragmentEvent) {
@@ -27,7 +34,7 @@ class DefFragmentStrategy : IFragmentStrategy<FragmentEvent> {
     private fun origAction(request: OrigFragmentEvent) {
         val fm = request.getFragmentManager()
         val ft = fm.beginTransaction()
-        if (request.getRequestType() is OrigFragmentEvent.RequestType.SHOW) {
+        if (request.getEventType() is OrigFragmentEvent.OrigEventType.SHOW) {
             val currentFragmentTag = getCurrentGroupFragmentTag(request)
             if (currentFragmentTag.isNotEmpty()) {
                 val currentFragment = fm.findFragmentByTag(currentFragmentTag)
@@ -73,9 +80,27 @@ class DefFragmentStrategy : IFragmentStrategy<FragmentEvent> {
 
     private fun navAction(request: NavFragmentEvent) {
 
-        request.getNavController()?.let {
-            it.navigate(request.actionId)
+        var navController : NavController? = null
+        request.getFragmentManager().findFragmentById(request.getNavHostId())?.let {
+            if (it is NavHostFragment) {
+                navController = it.navController
+            }
         }
+
+        if (navController == null) {
+            Log.e(TAG, "navAction: nav controller  is null ")
+            return
+        }
+
+
+        val eventType = request.getEventType()
+        if (eventType is NavFragmentEvent.NavEventType.NAVIGATE) {
+            navController?.navigate(eventType.actionId)
+        } else if (eventType is NavFragmentEvent.NavEventType.NAVIGATE_UP) {
+            navController?.navigateUp()
+        }
+
+
 
     }
 

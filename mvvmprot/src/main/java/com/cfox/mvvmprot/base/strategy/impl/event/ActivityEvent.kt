@@ -3,10 +3,10 @@ package com.cfox.mvvmprot.base.strategy.impl.event
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import com.cfox.mvvmprot.base.strategy.uievent.ActivityEvent
+import com.cfox.mvvmprot.base.strategy.uievent.AbsActivityEvent
 import java.io.Serializable
 
-class AppActivityEvent : ActivityEvent {
+class ActivityEvent : AbsActivityEvent {
 
 
     private var startMode : StartMode = StartMode.DEFAULT

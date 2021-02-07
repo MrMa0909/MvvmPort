@@ -6,9 +6,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.cfox.mvvmprot.base.IBaseViewModel
 import com.cfox.mvvmprot.base.model.MpModel
-import com.cfox.mvvmprot.base.strategy.uievent.ActivityEvent
-import com.cfox.mvvmprot.base.strategy.uievent.DialogEvent
-import com.cfox.mvvmprot.base.strategy.uievent.FragmentEvent
+import com.cfox.mvvmprot.base.strategy.uievent.AbsActivityEvent
+import com.cfox.mvvmprot.base.strategy.uievent.AbsDialogEvent
+import com.cfox.mvvmprot.base.strategy.uievent.AbsFragmentEvent
 import com.cfox.mvvmprot.base.strategy.uievent.IUIEvent
 import com.cfox.mvvmprot.utils.SingleLiveEvent
 import com.trello.rxlifecycle4.LifecycleProvider
@@ -64,15 +64,15 @@ open class MpViewModel<M : MpModel>(@NonNull val viewModelRequest: ViewModelRequ
         return uiEventLiveData
     }
 
-    fun runDialogEvent(dialogEvent: DialogEvent){
+    fun runDialogEvent(dialogEvent: AbsDialogEvent){
         uiEventLiveData.getDialogEvent().postValue(dialogEvent)
     }
 
-    fun runActivityEvent(activityEvent: ActivityEvent) {
+    fun runActivityEvent(activityEvent: AbsActivityEvent) {
         uiEventLiveData.getActivityEvent().postValue(activityEvent)
     }
 
-    fun runFragmentEvent(fragmentEvent: FragmentEvent) {
+    fun runFragmentEvent(fragmentEvent: AbsFragmentEvent) {
         uiEventLiveData.getFragmentEvent().postValue(fragmentEvent)
     }
 
@@ -89,22 +89,22 @@ open class MpViewModel<M : MpModel>(@NonNull val viewModelRequest: ViewModelRequ
     }
 
     class UIEventLiveData : SingleLiveEvent<IUIEvent>() {
-        private val dialogEvent = SingleLiveEvent<DialogEvent>()
-        private var activityEvent = SingleLiveEvent<ActivityEvent>()
-        private var fragmentEvent = SingleLiveEvent<FragmentEvent>()
+        private val dialogEvent = SingleLiveEvent<AbsDialogEvent>()
+        private var activityEvent = SingleLiveEvent<AbsActivityEvent>()
+        private var fragmentEvent = SingleLiveEvent<AbsFragmentEvent>()
         private var finishEvent = SingleLiveEvent<Unit>()
         private var onBackPressedEvent = SingleLiveEvent<Unit>()
         private var otherEvent = SingleLiveEvent<IUIEvent>()
 
-        fun getDialogEvent() : SingleLiveEvent<DialogEvent> {
+        fun getDialogEvent() : SingleLiveEvent<AbsDialogEvent> {
             return dialogEvent
         }
 
-        fun getActivityEvent() : SingleLiveEvent<ActivityEvent> {
+        fun getActivityEvent() : SingleLiveEvent<AbsActivityEvent> {
             return activityEvent
         }
 
-        fun getFragmentEvent() : SingleLiveEvent<FragmentEvent> {
+        fun getFragmentEvent() : SingleLiveEvent<AbsFragmentEvent> {
             return fragmentEvent
         }
 

@@ -1,18 +1,20 @@
 package com.cfox.mvvmprot.base.strategy.impl.event
 
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
-import com.cfox.mvvmprot.base.strategy.uievent.FragmentEvent
+import com.cfox.mvvmprot.base.strategy.uievent.AbsFragmentEvent
 
-class NavFragmentEvent(val navHostId: Int, val actionId: Int) : FragmentEvent() {
+class NavFragmentEvent(private val navHostId: Int, private val eventType: NavEventType) : AbsFragmentEvent() {
 
-    fun getNavController() : NavController? {
-        var navController : NavController ? = null
-        getFragmentManager().findFragmentById(navHostId)?.let {
-            if (it is NavHostFragment) {
-                navController = it.navController
-            }
-        }
-        return navController
+    fun getEventType() : NavEventType {
+        return eventType
+    }
+
+    fun getNavHostId() : Int {
+        return navHostId
+    }
+
+    sealed class NavEventType {
+
+        class NAVIGATE(val actionId: Int) : NavEventType()
+        object NAVIGATE_UP : NavEventType()
     }
 }

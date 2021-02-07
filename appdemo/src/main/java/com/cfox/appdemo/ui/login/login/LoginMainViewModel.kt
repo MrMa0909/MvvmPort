@@ -13,14 +13,16 @@ class LoginMainViewModel(viewModelRequest: ViewModelRequest) : BaseViewModel<Log
 
     val btnRegister = BindingCommand<Unit>(object : BindingAction {
         override fun call() {
-            val navFragmentEvent = NavFragmentEvent(R.id.nav_login_host_fragment, R.id.action_loginMainFragment_to_registerUserFragment)
+            val eventType = NavFragmentEvent.NavEventType.NAVIGATE(R.id.action_loginMainFragment_to_registerUserFragment)
+            val navFragmentEvent = NavFragmentEvent(R.id.nav_login_host_fragment, eventType)
             runFragmentEvent(navFragmentEvent)
         }
     })
 
     val btnForget = BindingCommand<Unit>(object : BindingAction {
         override fun call() {
-            val navFragmentEvent = NavFragmentEvent(R.id.nav_login_host_fragment, R.id.action_loginMainFragment_to_forgetPasswordFragment)
+            val eventType = NavFragmentEvent.NavEventType.NAVIGATE(R.id.action_loginMainFragment_to_forgetPasswordFragment)
+            val navFragmentEvent = NavFragmentEvent(R.id.nav_login_host_fragment, eventType)
             runFragmentEvent(navFragmentEvent)
         }
     })
