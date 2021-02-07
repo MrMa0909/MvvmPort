@@ -5,11 +5,11 @@ import com.cfox.mvvmprot.app.MPort
 object DataPersist  {
 
     private val dataPersistManager = MPort.getConfig().getDataPersistManager()
-    fun getString(key: String, defaultValue: String?): String? {
+    fun getString(key: String, defaultValue: String? = null): String? {
         return dataPersistManager.getStrategy().getString(key, defaultValue)
     }
 
-    fun getStringSet(key: String, defaultValue: Set<String>?): Set<String>? {
+    fun getStringSet(key: String, defaultValue: Set<String>? = null): Set<String>? {
         return dataPersistManager.getStrategy().getStringSet(key, defaultValue)
     }
 

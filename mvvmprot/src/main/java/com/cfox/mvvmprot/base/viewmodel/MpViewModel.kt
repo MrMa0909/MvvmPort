@@ -12,6 +12,8 @@ import com.cfox.mvvmprot.base.strategy.uievent.AbsFragmentEvent
 import com.cfox.mvvmprot.base.strategy.uievent.IUIEvent
 import com.cfox.mvvmprot.utils.SingleLiveEvent
 import com.trello.rxlifecycle4.LifecycleProvider
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import java.lang.ref.WeakReference
 import java.lang.reflect.ParameterizedType
 
@@ -21,7 +23,8 @@ open class MpViewModel<M : MpModel>(@NonNull val viewModelRequest: ViewModelRequ
 
     protected var model : M ? = null
     private var uiEventLiveData = UIEventLiveData()
-    lateinit var lifecyle : WeakReference<LifecycleProvider<*>>
+    private lateinit var lifecyle : WeakReference<LifecycleProvider<*>>
+    private val compositeDisposable : CompositeDisposable = CompositeDisposable()
 
     init {
         val modelTmp = viewModelRequest.getModel()
@@ -47,8 +50,15 @@ open class MpViewModel<M : MpModel>(@NonNull val viewModelRequest: ViewModelRequ
         return viewModelRequest.shareViewMode as SVM
     }
 
+    fun addSubscribe(disposable: Disposable?) {
+        disposable?.let {
+            compositeDisposable.add(it)
+        }
+    }
+
     override fun onCleared() {
         model?.onCleared()
+        compositeDisposable.clear()
     }
 
     /**
@@ -56,7 +66,7 @@ open class MpViewModel<M : MpModel>(@NonNull val viewModelRequest: ViewModelRequ
      *
      * @param lifecycle
      */
-    fun injectLifecycleProvider( lifecycle : LifecycleProvider<*>) {
+    fun injectLifecycleProvider(lifecycle : LifecycleProvider<*>) {
         lifecyle =  WeakReference(lifecycle);
     }
 

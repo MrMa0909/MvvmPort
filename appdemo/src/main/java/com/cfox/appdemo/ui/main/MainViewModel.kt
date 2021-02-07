@@ -20,6 +20,7 @@ class MainViewModel(viewModelRequest: ViewModelRequest) : BaseViewModel<MainMode
 
     })
 
+    // 传统方式启动fragment
     val show1BtnClick = BindingCommand<Unit>(object : BindingAction {
         override fun call() {
             val requestType = OrigFragmentEvent.OrigEventType.SHOW( R.id.head_fragment1, MainFragment1::class.java)
@@ -31,7 +32,6 @@ class MainViewModel(viewModelRequest: ViewModelRequest) : BaseViewModel<MainMode
 
     val show2BtnClick = BindingCommand<Unit>(object : BindingAction {
         override fun call() {
-
             val requestType = OrigFragmentEvent.OrigEventType.SHOW(R.id.head_fragment2, MainFragment2::class.java)
             val appOrigFragmentEvent = OrigFragmentEvent(requestType)
             runFragmentEvent(appOrigFragmentEvent)

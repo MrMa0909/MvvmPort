@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">AppDemo</string>
+
+    <string name="registering">注册中。。。</string>
+    <string name="register">注册</string>
 </resources>

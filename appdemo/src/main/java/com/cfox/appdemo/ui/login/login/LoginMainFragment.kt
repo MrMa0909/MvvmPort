@@ -24,10 +24,4 @@ class LoginMainFragment : BaserFragment<FragmentLoginMainBinding, LoginMainViewM
     override fun initVariableId(): Int {
         return BR.viewModel
     }
-
-    override fun initData() {
-        super.initData()
-//        val sharVM = viewModel.getShareViewModel<LoginViewModel>()
-
-    }
 }
