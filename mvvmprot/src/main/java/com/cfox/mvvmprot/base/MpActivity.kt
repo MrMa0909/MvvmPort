@@ -8,6 +8,7 @@ import androidx.lifecycle.*
 import androidx.navigation.findNavController
 import com.cfox.mvvmprot.app.MPort
 import com.cfox.mvvmprot.base.strategy.*
+import com.cfox.mvvmprot.base.strategy.impl.event.ActivityEvent
 import com.cfox.mvvmprot.base.strategy.uievent.*
 import com.cfox.mvvmprot.base.viewmodel.MpViewModel
 import com.cfox.mvvmprot.base.viewmodel.ViewModelRequest
@@ -73,71 +74,110 @@ abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompa
             })
 
             it.getUEvent().getActivityEvent().observe(this, Observer { activityEventData ->
-                activityEvent(activityEventData)
+                onActivityEvent(activityEventData)
             })
 
             it.getUEvent().getFragmentEvent().observe(this, Observer { fragmentEventData ->
-                fragmentEvent(fragmentEventData)
+                onFragmentEvent(fragmentEventData)
             })
 
             it.getUEvent().getDialogEvent().observe(this, Observer { dialogEventData ->
-                dialogEvent(dialogEventData)
+                onDialogEvent(dialogEventData)
             })
 
             it.getUEvent().getOtherEvent().observe(this, Observer { uiEventData ->
-                otherEvent(uiEventData)
+                onOtherEvent(uiEventData)
             })
         }
     }
-
-
-    internal fun otherEvent(uiEvent : IUIEvent) {
-        if (!onOtherEvent(uiEvent)) {
-            val otherStrategy = MPort.getConfig().getStrategyManager().getStrategy<IUIEvent>(StrategyType.OTHER)
-            if (otherStrategy is IOtherStrategy) {
-                otherStrategy.execute(uiEvent)
-            }
-        }
+    private fun onActivityEvent(activityEvent: AbsActivityEvent) {
+        activityEvent(activityEvent, null)
     }
 
-    internal fun dialogEvent(dialogEvent: AbsDialogEvent) {
-        if (!onDialogEvent(dialogEvent)) {
-            val dialogStrategy = MPort.getConfig().getStrategyManager().getStrategy<AbsDialogEvent>(StrategyType.DIALOG)
-            if (dialogStrategy is IDialogStrategy) {
-                dialogStrategy.execute(dialogEvent)
-            }
-        }
+    private fun onFragmentEvent(fragmentEvent : AbsFragmentEvent) {
+        fragmentEvent(fragmentEvent, null)
     }
 
-    internal fun activityEvent(activityEvent: AbsActivityEvent) {
-        if (!onActivityEvent(activityEvent)) {
-            val activityStrategy = MPort.getConfig().getStrategyManager().getStrategy<AbsActivityEvent>(StrategyType.ACTIVITY)
-            if (activityStrategy is IActivityStrategy) {
-                activityEvent.setContext(this)
-                activityStrategy.execute(activityEvent)
-            }
-        }
+    private fun onDialogEvent(dialogEvent: AbsDialogEvent) {
+        dialogEvent(dialogEvent, null)
     }
 
-    internal fun fragmentEvent(fragmentEvent : AbsFragmentEvent) {
+    private fun onOtherEvent(uiEvent : IUIEvent) {
+        otherEvent(uiEvent, null)
+    }
+
+    internal fun activityEvent(activityEvent: AbsActivityEvent, activityStrategy : IActivityStrategy<AbsActivityEvent> ?) {
+        var strategy : IActivityStrategy<AbsActivityEvent>? = activityStrategy
+        if (strategy == null) {
+            strategy = buildActivityStrategy()
+        }
+
+        if (strategy == null) {
+            val globalStrategy = MPort.getConfig().getStrategyManager().getStrategy<AbsActivityEvent>(StrategyType.ACTIVITY)
+            if (globalStrategy is IActivityStrategy<AbsActivityEvent>) {
+                strategy = globalStrategy
+            }
+        }
+        activityEvent.setContext(this)
+        strategy?.execute(activityEvent)
+    }
+
+    internal fun fragmentEvent(fragmentEvent : AbsFragmentEvent, fragmentStrategy : IFragmentStrategy<AbsFragmentEvent> ?) {
+
+        var strategy  = fragmentStrategy
+        if (strategy == null) {
+            strategy = buildFragmentStrategy()
+        }
+
+        if (strategy == null) {
+            val globalStrategy = MPort.getConfig().getStrategyManager().getStrategy<AbsFragmentEvent>(StrategyType.FRAGMENT)
+            if (globalStrategy is IFragmentStrategy<AbsFragmentEvent>) {
+                strategy = globalStrategy
+            }
+        }
         fragmentEvent.setActivityName(this.javaClass.name)
         fragmentEvent.setFragmentManager(supportFragmentManager)
-        if (!onFragmentEvent(fragmentEvent)) {
-            val fragmentStrategy = MPort.getConfig().getStrategyManager().getStrategy<AbsFragmentEvent>(StrategyType.FRAGMENT)
-            if (fragmentStrategy is IFragmentStrategy) {
-                fragmentStrategy.execute(fragmentEvent)
-            }
-        }
+        strategy?.execute(fragmentEvent)
     }
 
-    open fun onOtherEvent(iuiEvent : IUIEvent) : Boolean = false
+    internal fun dialogEvent(dialogEvent: AbsDialogEvent, dialogStrategy: IDialogStrategy<AbsDialogEvent> ?) {
+        var strategy  = dialogStrategy
+        if (strategy == null) {
+            strategy = buildDialogStrategy()
+        }
 
-    open fun onDialogEvent(dialogEvent: AbsDialogEvent) : Boolean = false
+        if (strategy == null) {
+            val globalStrategy = MPort.getConfig().getStrategyManager().getStrategy<AbsDialogEvent>(StrategyType.DIALOG)
+            if (globalStrategy is IDialogStrategy<AbsDialogEvent> ) {
+                strategy = globalStrategy
+            }
+        }
+        strategy?.execute(dialogEvent)
+    }
 
-    open fun onActivityEvent(activityEvent: AbsActivityEvent) : Boolean = false
+    internal fun otherEvent(uiEvent : IUIEvent, otherStrategy: IOtherStrategy<IUIEvent>?) {
 
-    open fun onFragmentEvent(fragmentEvent : AbsFragmentEvent): Boolean = false
+        var strategy  = otherStrategy
+        if (strategy == null) {
+            strategy = buildOtherStrategy()
+        }
 
+        if (strategy == null) {
+            val globalStrategy = MPort.getConfig().getStrategyManager().getStrategy<IUIEvent>(StrategyType.OTHER)
+            if (globalStrategy is IOtherStrategy<IUIEvent> ) {
+                strategy = globalStrategy
+            }
+        }
+        strategy?.execute(uiEvent)
+    }
+
+    open fun buildOtherStrategy() : IOtherStrategy<IUIEvent> ? = null
+
+    open fun buildDialogStrategy() : IDialogStrategy<AbsDialogEvent> ? = null
+
+    open fun buildActivityStrategy() : IActivityStrategy<AbsActivityEvent> ? = null
+
+    open fun buildFragmentStrategy() : IFragmentStrategy<AbsFragmentEvent> ? = null
 
     override fun initData() {}
 
@@ -159,13 +199,6 @@ abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompa
             vmr
         }
 
-    /**
-     * 创建ViewModel
-     *
-     * @param cls
-     * @param <T>
-     * @return
-    </T> */
     private fun <T : ViewModel?> getViewModel(activity: FragmentActivity?, cls: Class<T>?): T {
         return ViewModelProviders.of(activity!!, viewModelFactory)[cls!!]
     }

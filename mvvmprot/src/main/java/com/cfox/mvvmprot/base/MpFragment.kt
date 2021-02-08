@@ -10,6 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
+import com.cfox.mvvmprot.base.strategy.IActivityStrategy
+import com.cfox.mvvmprot.base.strategy.IDialogStrategy
+import com.cfox.mvvmprot.base.strategy.IFragmentStrategy
+import com.cfox.mvvmprot.base.strategy.IOtherStrategy
 import com.cfox.mvvmprot.base.strategy.uievent.*
 import com.cfox.mvvmprot.base.viewmodel.MpViewModel
 import com.cfox.mvvmprot.base.viewmodel.ViewModelRequest
@@ -105,45 +109,37 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
         }
     }
 
-    private fun otherEvent(uiEvent : IUIEvent) {
-        if (!onOtherEvent(uiEvent)) {
-            if (activity is MpActivity<*,*>) {
-                (activity as MpActivity<*, *>).otherEvent(uiEvent)
-            }
-        }
-    }
-
-    private fun dialogEvent(dialogEvent: AbsDialogEvent) {
-        if (!onDialogEvent(dialogEvent)) {
-            if (activity is MpActivity<*,*>) {
-                (activity as MpActivity<*, *>).dialogEvent(dialogEvent)
-            }
-        }
-    }
-
     private fun activityEvent(activityEvent: AbsActivityEvent) {
-        if (!onActivityEvent(activityEvent)) {
-            if (activity is MpActivity<*,*>) {
-                (activity as MpActivity<*, *>).activityEvent(activityEvent)
-            }
+        if (activity is MpActivity<*,*>) {
+            (activity as MpActivity<*, *>).activityEvent(activityEvent, buildActivityStrategy())
         }
     }
 
     private fun fragmentEvent(fragmentEvent: AbsFragmentEvent) {
-        if (!onFragmentEvent(fragmentEvent)) {
-            if (activity is MpActivity<*,*>) {
-                (activity as MpActivity<*, *>).fragmentEvent(fragmentEvent)
-            }
+        if (activity is MpActivity<*,*>) {
+            (activity as MpActivity<*, *>).fragmentEvent(fragmentEvent, buildFragmentStrategy())
         }
     }
 
-    open fun onOtherEvent(iuiEvent : IUIEvent) : Boolean = false
+    private fun otherEvent(uiEvent : IUIEvent) {
+        if (activity is MpActivity<*,*>) {
+            (activity as MpActivity<*, *>).otherEvent(uiEvent, buildOtherStrategy())
+        }
+    }
 
-    open fun onDialogEvent(dialogEvent: AbsDialogEvent) : Boolean = false
+    private fun dialogEvent(dialogEvent: AbsDialogEvent) {
+        if (activity is MpActivity<*,*>) {
+            (activity as MpActivity<*, *>).dialogEvent(dialogEvent, buildDialogStrategy())
+        }
+    }
 
-    open fun onActivityEvent(activityEvent: AbsActivityEvent) : Boolean = false
+    open fun buildActivityStrategy() : IActivityStrategy<AbsActivityEvent> ? = null
 
-    open fun onFragmentEvent(fragmentEvent : AbsFragmentEvent): Boolean = false
+    open fun buildFragmentStrategy() : IFragmentStrategy<AbsFragmentEvent>? = null
+
+    open fun buildDialogStrategy() : IDialogStrategy<AbsDialogEvent>? = null
+
+    open fun buildOtherStrategy() : IOtherStrategy<IUIEvent>? = null
 
     /**
      * 初始化根布局
