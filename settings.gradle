@@ -1,3 +1,4 @@
+include ':mpsupport'
 include ':appdemo'
 include ':module_camera'
 include ':app_wrapper'

@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/lib_common" />
             <option value="$PROJECT_DIR$/module_camera" />
             <option value="$PROJECT_DIR$/module_home" />
+            <option value="$PROJECT_DIR$/mpsupport" />
             <option value="$PROJECT_DIR$/mvvmprot" />
           </set>
         </option>

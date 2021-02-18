@@ -2,16 +2,15 @@ package com.cfox.appdemo.ui.login.register
 
 import android.app.Application
 import android.util.Log
-import androidx.databinding.ObservableField
 import com.cfox.appdemo.R
 import com.cfox.appdemo.base.BaseViewModel
 import com.cfox.appdemo.data.bean.RegisterBean
 import com.cfox.appdemo.data.login.RegisterUserModel
 import com.cfox.appdemo.utils.ToastUtils
-import com.cfox.mvvmprot.base.strategy.impl.event.NavFragmentEvent
+import com.cfox.mvvmprot.support.strategy.event.NavFragmentEvent
 import com.cfox.mvvmprot.base.viewmodel.ViewModelRequest
-import com.cfox.mvvmprot.binding.command.BindingAction
-import com.cfox.mvvmprot.binding.command.BindingCommand
+import com.cfox.mvvmprot.support.binding.command.BindingAction
+import com.cfox.mvvmprot.support.binding.command.BindingCommand
 
 class RegisterUserViewModel(viewModelRequest: ViewModelRequest) : BaseViewModel<RegisterUserModel>(viewModelRequest) {
     companion object {
@@ -40,10 +39,11 @@ class RegisterUserViewModel(viewModelRequest: ViewModelRequest) : BaseViewModel<
             Log.d(TAG, "call: cack status : $it")
             if (it == 0) {
                 ToastUtils.show("注册成功")
-                val navFragmentEvent = NavFragmentEvent(
-                    R.id.nav_login_host_fragment,
-                    NavFragmentEvent.NavEventType.NAVIGATE_UP
-                )
+                val navFragmentEvent =
+                    NavFragmentEvent(
+                        R.id.nav_login_host_fragment,
+                        NavFragmentEvent.NavEventType.NAVIGATE_UP
+                    )
                 runFragmentEvent(navFragmentEvent)
             } else {
                 ToastUtils.show("注册失败")

@@ -4,7 +4,7 @@ import android.content.Context
 
 internal class DataPersistManager {
 
-    private var strategy : IDataPersistStrategy = DefaultDataPersistStrategy()
+    private var strategy : IDataPersistStrategy = EmptyDataPersistStrategy()
 
     fun init(context: Context) {
         strategy.onCreate(context)

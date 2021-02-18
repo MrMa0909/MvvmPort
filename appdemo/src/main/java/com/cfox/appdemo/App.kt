@@ -4,6 +4,7 @@ import android.app.Application
 import com.cfox.appdemo.utils.ToastUtils
 import com.cfox.mvvmprot.app.MPort
 import com.cfox.mvvmprot.app.MpConfig
+import com.cfox.mvvmprot.support.MPortSupport
 
 class App : Application() {
 
@@ -11,14 +12,16 @@ class App : Application() {
         super.onCreate()
         ToastUtils.init(this)
 
-        val mpConfigBuilder = MpConfig.Builder()
+//        val mpConfigBuilder = MpConfig.Builder()
 //        mpConfigBuilder.activityStrategy = AppActivityStrategy()
 //        mpConfigBuilder.fragmentStrategy = AppFragmentStrategy()
 //        mpConfigBuilder.dialogStrategy = AppDialogStrategy()
 //        mpConfigBuilder.otherStrategy = AppOtherStrategy()
 //        mpConfigBuilder.dataPersistStrategy = AppDataPersistStrategy()
 
-        MPort.init(this).setConfig(mpConfigBuilder.build())
+//        MPort.init(this).setConfig(mpConfigBuilder.build())
+
+        MPortSupport.init(this)
 
     }
 

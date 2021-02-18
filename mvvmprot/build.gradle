@@ -33,6 +33,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
 //    sourceSets {
 //        main {
 //            if (!Boolean.valueOf(deps.isModule)) {
@@ -64,11 +68,5 @@ dependencies {
     api  "io.reactivex.rxjava2:rxandroid:$v_rxandroid"
     api  "com.trello.rxlifecycle4:rxlifecycle:$v_rxlifecycle"
     api  "com.trello.rxlifecycle4:rxlifecycle-components:$v_rxlifecycle_components"
-
-    api "com.tencent:mmkv-static:$v_mmkv"
-
-    testImplementation "junit:junit:$v_junit"
-    androidTestImplementation "androidx.test.ext:junit:$v_test_ext"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$v_test_espresso_core"
 
 }

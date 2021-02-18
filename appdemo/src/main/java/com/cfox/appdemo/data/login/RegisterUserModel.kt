@@ -17,7 +17,12 @@ class RegisterUserModel : BaseModel() {
     fun registerUser(userBean: RegisterBean) : Observable<Int> {
         return Observable.create<Int> {
             val registerStatus = (Math.random() * 10).toInt() % 2
-            Thread.sleep(5000)
+            try {
+                //模拟注册
+                Thread.sleep(5000)
+            } catch (e: Exception) {
+
+            }
 
             if (registerStatus == 0) {
                 userBean.userName.get()?.let {

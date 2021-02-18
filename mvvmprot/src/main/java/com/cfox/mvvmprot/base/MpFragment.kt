@@ -48,7 +48,7 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
         //私有的ViewModel与View的契约事件回调逻辑
         registerUIEventLiveDataCallBack()
         //页面数据初始化方法
-        initData();
+        initData()
         //页面事件监听的方法，一般用于ViewModel层转到View层的事件注册
         initViewObservable()
     }

@@ -5,10 +5,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.*
-import androidx.navigation.findNavController
 import com.cfox.mvvmprot.app.MPort
 import com.cfox.mvvmprot.base.strategy.*
-import com.cfox.mvvmprot.base.strategy.impl.event.ActivityEvent
 import com.cfox.mvvmprot.base.strategy.uievent.*
 import com.cfox.mvvmprot.base.viewmodel.MpViewModel
 import com.cfox.mvvmprot.base.viewmodel.ViewModelRequest

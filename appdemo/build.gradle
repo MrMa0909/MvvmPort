@@ -40,7 +40,7 @@ android {
 dependencies {
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation project(path: ':mvvmprot')
+    implementation project(path: ':mpsupport')
     implementation project(path: ':lib_common')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$v_kotlin"
     implementation "androidx.core:core-ktx:$v_androidx_core_ktx"
