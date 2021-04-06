@@ -116,7 +116,7 @@ abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompa
                 strategy = globalStrategy
             }
         }
-        activityEvent.setContext(this)
+        activityEvent.setActivity(this)
         strategy?.execute(activityEvent)
     }
 
@@ -133,7 +133,7 @@ abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompa
                 strategy = globalStrategy
             }
         }
-        fragmentEvent.setActivityName(this.javaClass.name)
+        fragmentEvent.setActivity(this)
         fragmentEvent.setFragmentManager(supportFragmentManager)
         strategy?.execute(fragmentEvent)
     }
@@ -150,6 +150,7 @@ abstract class MpActivity<V : ViewDataBinding, VM : MpViewModel<*>> : RxAppCompa
                 strategy = globalStrategy
             }
         }
+
         strategy?.execute(dialogEvent)
     }
 

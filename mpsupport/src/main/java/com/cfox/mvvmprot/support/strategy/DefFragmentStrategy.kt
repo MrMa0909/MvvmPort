@@ -23,11 +23,11 @@ class DefFragmentStrategy : IFragmentStrategy<AbsFragmentEvent> {
      */
     private val fragmentTreeMap = mutableMapOf<String, MutableMap<String, String>>()
 
-    override fun execute(request: AbsFragmentEvent) {
-        if (request is OrigFragmentEvent) {
-            origAction(request)
-        } else if (request is NavFragmentEvent) {
-            navAction(request)
+    override fun execute(event: AbsFragmentEvent) {
+        if (event is OrigFragmentEvent) {
+            origAction(event)
+        } else if (event is NavFragmentEvent) {
+            navAction(event)
         }
     }
 
@@ -60,7 +60,7 @@ class DefFragmentStrategy : IFragmentStrategy<AbsFragmentEvent> {
     }
 
     private fun getCurrentGroupFragmentTag(request: OrigFragmentEvent): String {
-        var result: String = ""
+        var result = ""
         val rootGroup = fragmentTreeMap[request.getActivityName()]
         if (rootGroup != null) {
             result = rootGroup[request.getGroupName()] ?: ""
@@ -92,16 +92,12 @@ class DefFragmentStrategy : IFragmentStrategy<AbsFragmentEvent> {
             return
         }
 
-
         val eventType = request.getEventType()
         if (eventType is NavFragmentEvent.NavEventType.NAVIGATE) {
             navController?.navigate(eventType.actionId)
         } else if (eventType is NavFragmentEvent.NavEventType.NAVIGATE_UP) {
             navController?.navigateUp()
         }
-
-
-
     }
 
     override fun onActivityDestroy(activityName: String) {

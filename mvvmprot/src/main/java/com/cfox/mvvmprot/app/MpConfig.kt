@@ -3,8 +3,7 @@ package com.cfox.mvvmprot.app
 import android.content.Context
 import com.cfox.mvvmprot.base.strategy.*
 import com.cfox.mvvmprot.datapersistence.DataPersistManager
-import com.cfox.mvvmprot.datapersistence.IDataPersistStrategy
-import com.trello.rxlifecycle4.android.ActivityEvent
+import com.cfox.mvvmprot.datapersistence.DataPersistStrategy
 
 class MpConfig {
     private val strategyManager = MpStrategyManager()
@@ -33,8 +32,8 @@ class MpConfig {
         builder.otherStrategy?.let {
             strategyManager.addStrategy(StrategyType.OTHER, it)
         }
-        builder.dataPersistStrategy?.let {
-            dataPersistManager.setStrategy(it)
+        builder.strategyList.forEach {
+            dataPersistManager.addStrategy(it)
         }
     }
 
@@ -51,7 +50,10 @@ class MpConfig {
         var fragmentStrategy: IFragmentStrategy<*> ? = null
         var dialogStrategy: IDialogStrategy<*> ? = null
         var otherStrategy: IOtherStrategy<*> ? = null
-        var dataPersistStrategy : IDataPersistStrategy? = null
+        var strategyList = mutableListOf<DataPersistStrategy>()
+        fun addStrategy(strategy: DataPersistStrategy) {
+            this.strategyList.add(strategy)
+        }
         fun build() : MpConfig {
             return MpConfig(this)
         }

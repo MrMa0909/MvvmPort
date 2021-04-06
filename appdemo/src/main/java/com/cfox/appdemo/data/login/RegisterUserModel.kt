@@ -3,7 +3,7 @@ package com.cfox.appdemo.data.login
 import android.util.Log
 import com.cfox.appdemo.base.BaseModel
 import com.cfox.appdemo.data.bean.RegisterBean
-import com.cfox.mvvmprot.datapersistence.DataPersist
+import com.cfox.mvvmprot.support.datapersistence.getWriter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -26,7 +26,7 @@ class RegisterUserModel : BaseModel() {
 
             if (registerStatus == 0) {
                 userBean.userName.get()?.let {
-                    DataPersist.putString(it, userBean.userPwd.get() )
+                    getWriter().putString(it, userBean.userPwd.get() )
                 }
             }
 

@@ -39,11 +39,11 @@ class ActivityEvent : AbsActivityEvent {
     fun buildStartIntent() : Intent {
         val intent = createIntent()
         cls?.let {
-            intent.setClass(getContext()!!, it)
+            intent.setClass(getActivity(), it)
         }
 
         className?.let {
-            intent.setClassName(getContext()!!, it)
+            intent.setClassName(getActivity(), it)
         }
 
         addParamsToIntent(intent)

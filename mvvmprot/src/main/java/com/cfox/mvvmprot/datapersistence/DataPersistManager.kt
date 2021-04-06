@@ -4,17 +4,19 @@ import android.content.Context
 
 internal class DataPersistManager {
 
-    private var strategy : IDataPersistStrategy = EmptyDataPersistStrategy()
+    private val strategyMap = mutableMapOf<String, DataPersistStrategy>()
 
     fun init(context: Context) {
-        strategy.onCreate(context)
+        strategyMap.forEach {
+            it.value.onCreate(context)
+        }
     }
 
-    fun setStrategy(strategy: IDataPersistStrategy) {
-        this.strategy = strategy
+    fun addStrategy(strategy: DataPersistStrategy) {
+        this.strategyMap[strategy.name] = strategy
     }
 
-    fun getStrategy() : IDataPersistStrategy {
-        return strategy
+    fun getStrategy(name: String) : DataPersistStrategy {
+        return this.strategyMap[name] ?: EmptyDataPersistStrategy()
     }
 }

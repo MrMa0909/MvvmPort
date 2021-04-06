@@ -11,9 +11,9 @@ object MPortSupport {
 
     fun init(application: Application) {
         val mpConfigBuilder = MpConfig.Builder()
-        mpConfigBuilder.dataPersistStrategy = DefaultDataPersistStrategy()
         mpConfigBuilder.activityStrategy = DefActivityStrategy()
         mpConfigBuilder.fragmentStrategy = DefFragmentStrategy()
+        mpConfigBuilder.addStrategy(DefaultDataPersistStrategy())
 //        mpConfigBuilder.dialogStrategy = AppDialogStrategy()
 //        mpConfigBuilder.otherStrategy = AppOtherStrategy()
 

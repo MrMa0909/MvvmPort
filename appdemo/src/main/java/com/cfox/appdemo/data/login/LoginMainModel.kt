@@ -3,7 +3,7 @@ package com.cfox.appdemo.data.login
 import android.util.Log
 import com.cfox.appdemo.base.BaseModel
 import com.cfox.appdemo.data.bean.LoginBean
-import com.cfox.mvvmprot.datapersistence.DataPersist
+import com.cfox.mvvmprot.support.datapersistence.getReader
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -19,7 +19,7 @@ class LoginMainModel : BaseModel() {
             var isSuccess = false
 
             loginBean.userName.get()?.let {
-                val pwd = DataPersist.getString(it)
+                val pwd = getReader().getString(it)
                 isSuccess = pwd == loginBean.password.get()
             }
             val resultCode = if (isSuccess) 0 else 1

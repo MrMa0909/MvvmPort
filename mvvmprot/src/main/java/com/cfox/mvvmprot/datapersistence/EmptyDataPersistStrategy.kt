@@ -2,7 +2,7 @@ package com.cfox.mvvmprot.datapersistence
 
 import android.content.Context
 
-class EmptyDataPersistStrategy : IDataPersistStrategy {
+class EmptyDataPersistStrategy : DataPersistStrategy("empty") {
     override fun onCreate(context: Context) {
 
     }

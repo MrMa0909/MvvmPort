@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -111,12 +112,14 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
 
     private fun activityEvent(activityEvent: AbsActivityEvent) {
         if (activity is MpActivity<*,*>) {
+            activityEvent.setFragment(this)
             (activity as MpActivity<*, *>).activityEvent(activityEvent, buildActivityStrategy())
         }
     }
 
     private fun fragmentEvent(fragmentEvent: AbsFragmentEvent) {
         if (activity is MpActivity<*,*>) {
+            fragmentEvent.setFragment(this)
             (activity as MpActivity<*, *>).fragmentEvent(fragmentEvent, buildFragmentStrategy())
         }
     }
@@ -129,6 +132,7 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
 
     private fun dialogEvent(dialogEvent: AbsDialogEvent) {
         if (activity is MpActivity<*,*>) {
+            dialogEvent.setFragment(this)
             (activity as MpActivity<*, *>).dialogEvent(dialogEvent, buildDialogStrategy())
         }
     }
@@ -162,22 +166,23 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
      */
     open fun createViewModel() : VM ? = null
 
-    open fun createViewModelRequest() : ViewModelRequest =
-        ViewModelRequest()
+    open fun createViewModelRequest() : ViewModelRequest = ViewModelRequest()
 
     override fun initData() {}
 
     override fun initViewObservable() {}
     private val viewModelFactory = ViewModelFactory {
-            val vmr = createViewModelRequest()
-            vmr.application = activity!!.application
+        val vmr = createViewModelRequest()
+        activity?.let {
+            vmr.application = it.application
             if (activity is MpActivity<*, *>) {
                 (activity as MpActivity<*, *>).getShareModel().let {
                     vmr.shareViewMode = it
                 }
             }
-            vmr
         }
+        vmr
+    }
     /**
      * 创建ViewModel
      *

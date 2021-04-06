@@ -1,16 +1,27 @@
 package com.cfox.mvvmprot.base.strategy.uievent
 
-import android.content.Context
+import android.app.Activity
+import androidx.fragment.app.Fragment
 
 abstract class AbsActivityEvent : IUIEvent {
 
-    private var content : Context ? = null
+    private lateinit var activity : Activity
 
-    internal fun setContext(context: Context?) {
-        this.content = context
+    private var fragment : Fragment ? = null
+
+    internal fun setActivity(activity: Activity) {
+        this.activity = activity
     }
 
-    fun getContext() : Context ? {
-        return content
+    internal fun setFragment(fragment: Fragment) {
+        this.fragment = fragment
+    }
+
+    fun getActivity() : Activity {
+        return activity
+    }
+
+    fun getFragment() : Fragment ? {
+        return fragment
     }
 }

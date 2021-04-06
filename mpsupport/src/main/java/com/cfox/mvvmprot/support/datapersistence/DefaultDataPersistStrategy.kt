@@ -1,10 +1,14 @@
 package com.cfox.mvvmprot.support.datapersistence
 
 import android.content.Context
-import com.cfox.mvvmprot.datapersistence.IDataPersistStrategy
+import com.cfox.mvvmprot.datapersistence.DataPersistStrategy
 import com.tencent.mmkv.MMKV
 
-internal class DefaultDataPersistStrategy : IDataPersistStrategy {
+internal class DefaultDataPersistStrategy : DataPersistStrategy(NAME) {
+
+    companion object {
+        const val NAME = "default"
+    }
 
     private lateinit var kv : MMKV
     override fun onCreate(context: Context) {
