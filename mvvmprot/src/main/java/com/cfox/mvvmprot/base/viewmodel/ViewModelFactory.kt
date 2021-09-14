@@ -8,14 +8,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import java.lang.reflect.InvocationTargetException
 
-class ViewModelFactory(private val vmrMethod : () -> ViewModelRequest) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory<T>(private val vmrMethod: () -> T) : ViewModelProvider.NewInstanceFactory() {
 
     companion object {
-        fun  checkApplication(activity : Activity) : Application {
+        fun checkApplication(activity: Activity): Application {
             val application = activity.application
             if (application == null) {
-                throw  IllegalStateException("Your activity/fragment is not yet attached to "
-                        + "Application. You can't request ViewModel before onCreate call.")
+                throw  IllegalStateException(
+                    "Your activity/fragment is not yet attached to "
+                            + "Application. You can't request ViewModel before onCreate call."
+                )
             }
             return application
         }
@@ -32,15 +34,22 @@ class ViewModelFactory(private val vmrMethod : () -> ViewModelRequest) : ViewMod
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (AndroidViewModel::class.java.isAssignableFrom(modelClass)) {
             //noinspection TryWithIdenticalCatches
+
+            val param = vmrMethod()
             try {
-                return modelClass.getConstructor(ViewModelRequest::class.java).newInstance(vmrMethod.invoke())
+                val clazz = if (param is ViewModelParam) {
+                    ViewModelParam::class.java
+                } else {
+                    Application::class.java
+                }
+                return modelClass.getConstructor(clazz).newInstance(vmrMethod())
             } catch (e : NoSuchMethodException) {
                 throw RuntimeException("Cannot create an instance of $modelClass", e)
-            } catch (e : IllegalAccessException ) {
+            } catch (e: IllegalAccessException) {
                 throw RuntimeException("Cannot create an instance of $modelClass", e)
-            } catch (e : InstantiationException) {
+            } catch (e: InstantiationException) {
                 throw RuntimeException("Cannot create an instance of $modelClass", e)
-            } catch (e : InvocationTargetException) {
+            } catch (e: InvocationTargetException) {
                 throw RuntimeException("Cannot create an instance of $modelClass", e)
             }
         }

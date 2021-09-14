@@ -36,20 +36,20 @@ class ActivityEvent : AbsActivityEvent {
         this.params = params
     }
 
-    fun buildStartIntent() : Intent {
-        val intent = createIntent()
-        cls?.let {
-            intent.setClass(getActivity(), it)
+    fun buildStartIntent() : Intent? {
+        var intent : Intent ? = null
+        getActivity()?.let {activity ->
+            intent  = createIntent()
+            cls?.let {
+                intent?.setClass(activity, it)
+            }
+
+            className?.let {
+                intent?.setClassName(activity, it)
+            }
+            addParamsToIntent(intent!!)
         }
-
-        className?.let {
-            intent.setClassName(getActivity(), it)
-        }
-
-        addParamsToIntent(intent)
-
         return intent
-
     }
 
     private fun createIntent(): Intent {

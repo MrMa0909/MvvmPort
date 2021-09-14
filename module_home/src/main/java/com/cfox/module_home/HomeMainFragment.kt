@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.cfox.lib_common.arouter.RouterPath
-import com.cfox.mvvmprot.base.MpFragment
+import com.cfox.mvvmprot.base.MPFragment
 
 @Route(path = RouterPath.HOME_MAIN_FRAGMENT)
-class HomeMainFragment : MpFragment<ViewDataBinding, HomeViewModel>() {
+class HomeMainFragment : MPFragment<ViewDataBinding, HomeViewModel>() {
     override fun initContentView(
         inflater: LayoutInflater,
         container: ViewGroup?,

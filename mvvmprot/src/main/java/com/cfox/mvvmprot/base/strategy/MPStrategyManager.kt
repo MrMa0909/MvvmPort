@@ -4,7 +4,7 @@ import android.util.Log
 import com.cfox.mvvmprot.BuildConfig
 import com.cfox.mvvmprot.base.strategy.uievent.IUIEvent
 
-internal class MpStrategyManager {
+internal class MPStrategyManager {
 
     private val strategyMap = mutableMapOf<Int, IStrategy<*>>()
 
@@ -16,6 +16,9 @@ internal class MpStrategyManager {
     }
 
     fun <T: IUIEvent> getStrategy(strategyType: StrategyType) : IStrategy<T>? {
-        return strategyMap[strategyType.getType()] as IStrategy<T>
+        val strategy = strategyMap[strategyType.getType()]
+        return strategy?.let {
+            it as IStrategy<T>
+        }
     }
 }

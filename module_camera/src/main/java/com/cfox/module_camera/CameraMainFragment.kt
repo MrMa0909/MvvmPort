@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.cfox.lib_common.arouter.RouterPath
-import com.cfox.mvvmprot.base.MpFragment
+import com.cfox.mvvmprot.base.MPFragment
 import com.cfox.module_camera.databinding.CameraFragmentMainBinding
 
 @Route(path = RouterPath.CAMERA_MAIN_FRAGMENT)
-class CameraMainFragment : MpFragment<CameraFragmentMainBinding, CameraViewModel>() {
+class CameraMainFragment : MPFragment<CameraFragmentMainBinding, CameraViewModel>() {
     override fun initContentView(
         inflater: LayoutInflater,
         container: ViewGroup?,

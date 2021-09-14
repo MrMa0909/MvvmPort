@@ -7,18 +7,19 @@ class DefActivityStrategy : IActivityStrategy<ActivityEvent> {
     override fun execute(event: ActivityEvent) {
         val startMode = event.getStartMode()
         val fragment = event.getFragment()
-        val intent =  event.buildStartIntent()
-        if (fragment != null) {
-            if (startMode is ActivityEvent.StartMode.FOR_RESULT) {
-                fragment.startActivityForResult(intent, startMode.requestCode, startMode.bundle)
+        event.buildStartIntent()?.let {
+            if (fragment != null) {
+                if (startMode is ActivityEvent.StartMode.FOR_RESULT) {
+                    fragment.startActivityForResult(it, startMode.requestCode, startMode.bundle)
+                } else {
+                    fragment.startActivity(it)
+                }
             } else {
-                fragment.startActivity(intent)
-            }
-        } else {
-            if (startMode is ActivityEvent.StartMode.FOR_RESULT) {
-                event.getActivity().startActivityForResult(intent, startMode.requestCode, startMode.bundle)
-            } else {
-                event.getActivity().startActivity(intent)
+                if (startMode is ActivityEvent.StartMode.FOR_RESULT) {
+                    event.getActivity()?.startActivityForResult(it, startMode.requestCode, startMode.bundle)
+                } else {
+                    event.getActivity()?.startActivity(it)
+                }
             }
         }
     }

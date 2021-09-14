@@ -7,7 +7,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.cfox.lib_common.arouter.RouterPath
 import com.cfox.mvvmprot.base.MpActivity
 
-class MainActivityMp : MpActivity<ViewDataBinding, MainViewModelMp>() {
+class MainActivityMp : MpActivity<ViewDataBinding, MainViewModelMP>() {
 
     override fun initContentView(savedInstanceState: Bundle?): Int {
         return R.layout.activity_main
@@ -17,7 +17,7 @@ class MainActivityMp : MpActivity<ViewDataBinding, MainViewModelMp>() {
         return BR.viewModel
     }
 
-    override fun initViewModel(): MainViewModelMp? {
+    override fun initViewModel(): MainViewModelMP? {
         return super.initViewModel()
     }
 

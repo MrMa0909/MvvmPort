@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -16,12 +15,12 @@ import com.cfox.mvvmprot.base.strategy.IDialogStrategy
 import com.cfox.mvvmprot.base.strategy.IFragmentStrategy
 import com.cfox.mvvmprot.base.strategy.IOtherStrategy
 import com.cfox.mvvmprot.base.strategy.uievent.*
-import com.cfox.mvvmprot.base.viewmodel.MpViewModel
-import com.cfox.mvvmprot.base.viewmodel.ViewModelRequest
+import com.cfox.mvvmprot.base.viewmodel.MPViewModel
+import com.cfox.mvvmprot.base.viewmodel.ViewModelParam
 import com.cfox.mvvmprot.base.viewmodel.ViewModelFactory
 import java.lang.reflect.ParameterizedType
 
-abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment() , IBaseView {
+abstract class MPFragment<V : ViewDataBinding, VM : MPViewModel<*>> : RxFragment() , IBaseView {
 
     protected lateinit var binding : V
     protected lateinit var viewModel : VM
@@ -59,10 +58,10 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
         if (viewModelTmp == null) {
             val type = javaClass.genericSuperclass
             val modelClass = if (type is ParameterizedType) {
-                type.actualTypeArguments[1] as Class<MpViewModel<*>>
+                type.actualTypeArguments[1] as Class<MPViewModel<*>>
             } else {
                 //如果没有指定泛型参数，则默认使用BaseViewModel
-                MpViewModel::class.java
+                MPViewModel::class.java
             }
             viewModelTmp = getViewModel(this, modelClass) as VM
         }
@@ -111,39 +110,39 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
     }
 
     private fun activityEvent(activityEvent: AbsActivityEvent) {
-        if (activity is MpActivity<*,*>) {
+        if (activity is MPActivity<*,*,*>) {
             activityEvent.setFragment(this)
-            (activity as MpActivity<*, *>).activityEvent(activityEvent, buildActivityStrategy())
+            (activity as MPActivity<*,*,*>).activityEvent(activityEvent, initActivityStrategy())
         }
     }
 
     private fun fragmentEvent(fragmentEvent: AbsFragmentEvent) {
-        if (activity is MpActivity<*,*>) {
+        if (activity is MPActivity<*,*,*>) {
             fragmentEvent.setFragment(this)
-            (activity as MpActivity<*, *>).fragmentEvent(fragmentEvent, buildFragmentStrategy())
+            (activity as MPActivity<*,*,*>).fragmentEvent(fragmentEvent, initFragmentStrategy())
         }
     }
 
     private fun otherEvent(uiEvent : IUIEvent) {
-        if (activity is MpActivity<*,*>) {
-            (activity as MpActivity<*, *>).otherEvent(uiEvent, buildOtherStrategy())
+        if (activity is MPActivity<*,*,*>) {
+            (activity as MPActivity<*,*,*>).otherEvent(uiEvent, initOtherStrategy())
         }
     }
 
     private fun dialogEvent(dialogEvent: AbsDialogEvent) {
-        if (activity is MpActivity<*,*>) {
+        if (activity is MPActivity<*,*,*>) {
             dialogEvent.setFragment(this)
-            (activity as MpActivity<*, *>).dialogEvent(dialogEvent, buildDialogStrategy())
+            (activity as MPActivity<*,*,*>).dialogEvent(dialogEvent, initDialogStrategy())
         }
     }
 
-    open fun buildActivityStrategy() : IActivityStrategy<AbsActivityEvent> ? = null
-
-    open fun buildFragmentStrategy() : IFragmentStrategy<AbsFragmentEvent>? = null
-
-    open fun buildDialogStrategy() : IDialogStrategy<AbsDialogEvent>? = null
-
-    open fun buildOtherStrategy() : IOtherStrategy<IUIEvent>? = null
+    /**
+     * tips:下面四个方法暂时隐藏
+     */
+    private fun initActivityStrategy() : IActivityStrategy<AbsActivityEvent> ? = null
+    private fun initFragmentStrategy() : IFragmentStrategy<AbsFragmentEvent>? = null
+    private fun initDialogStrategy() : IDialogStrategy<AbsDialogEvent>? = null
+    private fun initOtherStrategy() : IOtherStrategy<IUIEvent>? = null
 
     /**
      * 初始化根布局
@@ -166,7 +165,7 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
      */
     open fun createViewModel() : VM ? = null
 
-    open fun createViewModelRequest() : ViewModelRequest = ViewModelRequest()
+    open fun createViewModelRequest() : ViewModelParam = ViewModelParam()
 
     override fun initData() {}
 
@@ -175,9 +174,9 @@ abstract class MpFragment<V : ViewDataBinding, VM : MpViewModel<*>> : RxFragment
         val vmr = createViewModelRequest()
         activity?.let {
             vmr.application = it.application
-            if (activity is MpActivity<*, *>) {
-                (activity as MpActivity<*, *>).getShareModel().let {
-                    vmr.shareViewMode = it
+            if (activity is MPActivity<*,*,*>) {
+                (activity as MPActivity<*,*,*>).getShareModel().let { svm ->
+                    vmr.shareViewMode = svm
                 }
             }
         }

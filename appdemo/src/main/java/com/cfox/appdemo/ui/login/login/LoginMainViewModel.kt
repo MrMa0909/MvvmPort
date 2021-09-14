@@ -6,12 +6,12 @@ import com.cfox.appdemo.data.bean.LoginBean
 import com.cfox.appdemo.data.login.LoginMainModel
 import com.cfox.appdemo.utils.ToastUtils
 import com.cfox.mvvmprot.support.strategy.event.NavFragmentEvent
-import com.cfox.mvvmprot.base.viewmodel.ViewModelRequest
+import com.cfox.mvvmprot.base.viewmodel.ViewModelParam
 import com.cfox.mvvmprot.support.binding.command.BindingAction
 import com.cfox.mvvmprot.support.binding.command.BindingCommand
 import com.cfox.mvvmprot.utils.SingleLiveEvent
 
-class LoginMainViewModel(viewModelRequest: ViewModelRequest) : BaseViewModel<LoginMainModel>(viewModelRequest){
+class LoginMainViewModel(viewModelParam: ViewModelParam) : BaseViewModel<LoginMainModel>(viewModelParam){
 
     val loginInfo = LoginBean()
 
@@ -50,7 +50,7 @@ class LoginMainViewModel(viewModelRequest: ViewModelRequest) : BaseViewModel<Log
                     R.id.nav_login_host_fragment,
                     eventType
                 )
-            runFragmentEvent(navFragmentEvent)
+            sendFragmentEvent(navFragmentEvent)
         }
     })
 
@@ -62,7 +62,7 @@ class LoginMainViewModel(viewModelRequest: ViewModelRequest) : BaseViewModel<Log
                     R.id.nav_login_host_fragment,
                     eventType
                 )
-            runFragmentEvent(navFragmentEvent)
+            sendFragmentEvent(navFragmentEvent)
         }
     })
 

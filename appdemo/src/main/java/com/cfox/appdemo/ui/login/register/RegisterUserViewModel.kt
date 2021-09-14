@@ -8,11 +8,11 @@ import com.cfox.appdemo.data.bean.RegisterBean
 import com.cfox.appdemo.data.login.RegisterUserModel
 import com.cfox.appdemo.utils.ToastUtils
 import com.cfox.mvvmprot.support.strategy.event.NavFragmentEvent
-import com.cfox.mvvmprot.base.viewmodel.ViewModelRequest
+import com.cfox.mvvmprot.base.viewmodel.ViewModelParam
 import com.cfox.mvvmprot.support.binding.command.BindingAction
 import com.cfox.mvvmprot.support.binding.command.BindingCommand
 
-class RegisterUserViewModel(viewModelRequest: ViewModelRequest) : BaseViewModel<RegisterUserModel>(viewModelRequest) {
+class RegisterUserViewModel(viewModelParam: ViewModelParam) : BaseViewModel<RegisterUserModel>(viewModelParam) {
     companion object {
         private const val TAG = "RegisterUserViewModel"
     }
@@ -35,7 +35,7 @@ class RegisterUserViewModel(viewModelRequest: ViewModelRequest) : BaseViewModel<
 
     private fun requestRegister() {
         btnText = getApplication<Application>().getString(R.string.registering)
-        val disposable = model?.registerUser(registerInfo)?.subscribe {
+        val disposable = model.registerUser(registerInfo).subscribe {
             Log.d(TAG, "call: cack status : $it")
             if (it == 0) {
                 ToastUtils.show("注册成功")
@@ -44,7 +44,7 @@ class RegisterUserViewModel(viewModelRequest: ViewModelRequest) : BaseViewModel<
                         R.id.nav_login_host_fragment,
                         NavFragmentEvent.NavEventType.NAVIGATE_UP
                     )
-                runFragmentEvent(navFragmentEvent)
+                sendFragmentEvent(navFragmentEvent)
             } else {
                 ToastUtils.show("注册失败")
             }

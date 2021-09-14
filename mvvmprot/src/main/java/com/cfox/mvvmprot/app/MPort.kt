@@ -4,14 +4,14 @@ import android.app.Application
 
 object MPort {
 
-    private var mpConfigWrapper = MpConfigWrapper()
-    fun init(application: Application) : MpConfigWrapper {
+    private var mpConfigWrapper = MPConfigWrapper()
+    fun init(application: Application) : MPConfigWrapper {
         AppContext.init(application.applicationContext)
-        mpConfigWrapper.setConfig(MpConfig.Builder().build())
+        mpConfigWrapper.setConfig(MPConfig.Builder().build())
         return mpConfigWrapper
     }
 
-    internal fun getConfig() : MpConfig {
+    internal fun getConfig() : MPConfig {
         return mpConfigWrapper.getConfig()
     }
 }

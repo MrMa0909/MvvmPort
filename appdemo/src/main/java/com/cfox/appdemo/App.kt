@@ -2,8 +2,6 @@ package com.cfox.appdemo
 
 import android.app.Application
 import com.cfox.appdemo.utils.ToastUtils
-import com.cfox.mvvmprot.app.MPort
-import com.cfox.mvvmprot.app.MpConfig
 import com.cfox.mvvmprot.support.MPortSupport
 
 class App : Application() {

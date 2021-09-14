@@ -1,8 +1,8 @@
 package com.cfox.module_home
 
-import android.app.Application
 import com.cfox.mvvmprot.base.model.MpModel
-import com.cfox.mvvmprot.base.viewmodel.MpViewModel
+import com.cfox.mvvmprot.base.viewmodel.MPViewModel
+import com.cfox.mvvmprot.base.viewmodel.ViewModelParam
 
-class HomeViewModel(application: Application) : MpViewModel<MpModel>(application) {
+class HomeViewModel(iewModelParam: ViewModelParam) : MPViewModel<MpModel>(iewModelParam) {
 }

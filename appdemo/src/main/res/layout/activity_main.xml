@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/button"
             android:text="show 1"
-            app:onClickCommand="@{viewModel.show1BtnClick}" />
+            app:onClickCommand="@{viewModel.btnShowClick}" />
 
         <Button
             android:id="@+id/show_fragment2"
@@ -36,7 +36,15 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/show_fragment1"
             android:text="show 2"
-            app:onClickCommand="@{viewModel.show2BtnClick}" />
+            app:onClickCommand="@{viewModel.btnShowUp}" />
+
+        <Button
+            android:id="@+id/btn_set_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/show_fragment2"
+            android:text="set Data"
+            app:onClickCommand="@{viewModel.btnSetDataClick}" />
 
 
         <FrameLayout

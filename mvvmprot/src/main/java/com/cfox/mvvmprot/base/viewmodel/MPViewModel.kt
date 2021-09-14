@@ -17,17 +17,17 @@ import io.reactivex.disposables.Disposable
 import java.lang.ref.WeakReference
 import java.lang.reflect.ParameterizedType
 
-open class MpViewModel<M : MpModel>(@NonNull val viewModelRequest: ViewModelRequest)
-    : AndroidViewModel(viewModelRequest.application) ,
+open class MPViewModel<M : MpModel>(@NonNull val viewModelParam: ViewModelParam)
+    : AndroidViewModel(viewModelParam.application) ,
     IBaseViewModel {
 
-    protected var model : M ? = null
+    protected val model : M
     private var uiEventLiveData = UIEventLiveData()
     private lateinit var lifecyle : WeakReference<LifecycleProvider<*>>
     private val compositeDisposable : CompositeDisposable = CompositeDisposable()
 
     init {
-        val modelTmp = viewModelRequest.getModel()
+        val modelTmp = viewModelParam.getModel()
         if (modelTmp != null) {
             model = modelTmp as M
         } else {
@@ -46,8 +46,8 @@ open class MpViewModel<M : MpModel>(@NonNull val viewModelRequest: ViewModelRequ
         return modelClass.newInstance() as M
     }
 
-    fun <SVM : MpViewModel<*>> getShareViewModel() : SVM {
-        return viewModelRequest.shareViewMode as SVM
+    fun <SVM : MPSViewModel> getShareViewModel() : SVM {
+        return viewModelParam.shareViewMode as SVM
     }
 
     fun addSubscribe(disposable: Disposable?) {
@@ -57,7 +57,7 @@ open class MpViewModel<M : MpModel>(@NonNull val viewModelRequest: ViewModelRequ
     }
 
     override fun onCleared() {
-        model?.onCleared()
+        model.onCleared()
         compositeDisposable.clear()
     }
 
@@ -74,19 +74,19 @@ open class MpViewModel<M : MpModel>(@NonNull val viewModelRequest: ViewModelRequ
         return uiEventLiveData
     }
 
-    fun runDialogEvent(dialogEvent: AbsDialogEvent){
+    fun sendDialogEvent(dialogEvent: AbsDialogEvent){
         uiEventLiveData.getDialogEvent().postValue(dialogEvent)
     }
 
-    fun runActivityEvent(activityEvent: AbsActivityEvent) {
+    fun sendActivityEvent(activityEvent: AbsActivityEvent) {
         uiEventLiveData.getActivityEvent().postValue(activityEvent)
     }
 
-    fun runFragmentEvent(fragmentEvent: AbsFragmentEvent) {
+    fun sendFragmentEvent(fragmentEvent: AbsFragmentEvent) {
         uiEventLiveData.getFragmentEvent().postValue(fragmentEvent)
     }
 
-    fun runOtherEvent(iEventRequest: IUIEvent) {
+    fun sendOtherEvent(iEventRequest: IUIEvent) {
         uiEventLiveData.getOtherEvent().postValue(iEventRequest)
     }
 

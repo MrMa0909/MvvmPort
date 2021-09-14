@@ -5,8 +5,8 @@ import com.cfox.mvvmprot.base.strategy.*
 import com.cfox.mvvmprot.datapersistence.DataPersistManager
 import com.cfox.mvvmprot.datapersistence.DataPersistStrategy
 
-class MpConfig {
-    private val strategyManager = MpStrategyManager()
+class MPConfig {
+    private val strategyManager = MPStrategyManager()
     private val dataPersistManager = DataPersistManager()
 
     private var isInit = false
@@ -37,7 +37,7 @@ class MpConfig {
         }
     }
 
-    internal fun getStrategyManager() : MpStrategyManager {
+    internal fun getStrategyManager() : MPStrategyManager {
         return strategyManager
     }
 
@@ -54,8 +54,8 @@ class MpConfig {
         fun addStrategy(strategy: DataPersistStrategy) {
             this.strategyList.add(strategy)
         }
-        fun build() : MpConfig {
-            return MpConfig(this)
+        fun build() : MPConfig {
+            return MPConfig(this)
         }
     }
 }
